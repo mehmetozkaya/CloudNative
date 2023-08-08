@@ -89,12 +89,14 @@ All these steps we will not only explore cloud-native tools but also explore Clo
 The learning methodology will be;
 
 Learn -> Explore -> Design -> Hands-on
+
 We will learn Cloud-Native architectures and visit Cloud-Native tools, explore and understand these tools. And design architecture with using these tools and lastly we will perform hands-on labs to practice tools and cloud-native architectures.
 
 ## Course Target
 This course has 1 main target:
 
 to be a decision-maker as a software developer/architect in cloud-native architecture boards.
+
 This course is designed for software developers and architects who are interested in learning about cloud-native technologies and how to apply them in real-world scenarios.
 
 Hands-on Design and Development Activities
@@ -102,4 +104,5 @@ Apply best practices with cloud-native microservices design patterns and princip
 Explore and Practice with cloud-native tools, understand when and where to use these tools
 Prepare for Software Architecture Interviews
 Prepare for System Design Architecture Interview exams.
+
 By the end of this course, you will gain real-world experience, you will have a solid understanding of the cloud-native ecosystem and will be ready to design, build, and deploy your own cloud-native applications using microservices, Kubernetes, service meshes, CI/CD pipelines, and more.
