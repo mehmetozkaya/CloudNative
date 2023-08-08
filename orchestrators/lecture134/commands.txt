@@ -1,0 +1,52 @@
+Creating a Pod Definition
+----
+product-pod.yaml
+>
+Open 2. terminal to watch created pods on K8s
+	kubectl get pods -w
+
+>
+Apply the configuration
+    kubectl apply -f product-pod.yaml
+
+>
+See Watch 
+
+kubectl get pods -w
+NAME         READY   STATUS    RESTARTS   AGE
+my-app-pod   0/1     Pending   0          0s
+my-app-pod   0/1     Pending   0          0s
+my-app-pod   0/1     ContainerCreating   0          
+my-app-pod   1/1     Running             0      
+
+>
+kubectl get pod
+NAME         READY   STATUS    RESTARTS   AGE
+my-app-pod   1/1     Running   0          63s
+
+>
+Expose the Pod
+    kubectl port-forward product-pod 8080:8080
+
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
+
+You can now access the microservice at http://localhost:8080.
+
+>
+SEE DEPLOYED MICROSERVICE ON K8S WITH POD
+
+http://localhost:8080/api/products
+
+[{"id":1,"name":"Product A","price":12.99},{"id":2,"name":"Product B","price":23.99},{"id":3,"name":"Product C","price":34.99}]
+
+>
+Stop Pod
+    CTRL+C
+
+>
+Clean Up
+
+kubectl delete pod product-pod
+or
+kubectl delete -f .\product-pod.yaml

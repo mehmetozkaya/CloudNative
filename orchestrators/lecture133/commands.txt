@@ -1,0 +1,33 @@
+Creating a Pod Definition
+----
+>1
+Make sure that you have updated image accordingly.
+
+Retrieve the Product microservice container images
+	https://hub.docker.com/repository/docker/mehmetozkaya/productservice/general
+
+The code for the Product ms and the Dockerfiles to build the container images has already been created in the last hands-on labs.
+	docker pull mehmetozkaya/productservice:latest
+
+>2
+The Pod
+A container running in Kubernetes is called a Pod. 
+A Pod is basically a running container on a Node or VM. It can be more. 
+
+Pod definition can be created via the kubectl command imperatively from arguments
+ or declaratively from a configuration file. 
+Use the kubectl command to write our configuration files. 
+
+>3
+product-pod.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: product-pod
+spec:
+  containers:
+  - name: product
+    image: mehmetozkaya/productservice:latest
+    ports:
+    - containerPort: 8080

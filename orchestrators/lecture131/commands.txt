@@ -1,0 +1,22 @@
+Getting Started with Minikube
+----
+>
+Start Docker Desktop
+
+>
+Start your minikube cluster
+	minikube start
+
+>
+Interact with your cluster
+	kubectl get po -A
+
+Alternative
+	minikube kubectl -- get po -A
+
+>
+See that our K8s is up and running
+
+>
+See dashboard
+	minikube dashboard

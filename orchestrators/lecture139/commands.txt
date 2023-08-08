@@ -1,0 +1,66 @@
+Apply a Service in K8s
+----
+product-service.yaml
+
+>
+Apply the configuration
+    kubectl apply -f product-service.yaml
+
+>
+See all 
+
+kubectl get all
+NAME                           READY   STATUS    RESTARTS   AGE
+pod/product-5c4647dd7c-lczvv   1/1     Running   0          11m
+pod/product-5c4647dd7c-nmmk4   1/1     Running   0          11m
+pod/product-5c4647dd7c-tg8jl   1/1     Running   0          11m
+
+NAME                      TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/kubernetes        ClusterIP      10.96.0.1       <none>        443/TCP        96m
+service/product-service   LoadBalancer   10.98.222.106   <pending>     80:31240/TCP   24s
+
+NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/product   3/3     3            3           11m
+
+NAME                                 DESIRED   CURRENT   READY   AGE
+replicaset.apps/product-5c4647dd7c   3         3         3       11m
+
+>
+Notice the service/product-service --type argument has a value of LoadBalancer. 
+This service type is implemented by the cloud-controller-manager which is part of the Kubernetes control plane. 
+
+>
+Expose the Service
+To invoke our pod with this service definition, we need a tunnel for K8s LoadBalancer IP.
+
+kubectl port-forward service/product-service 7080:8080
+
+> SEE RESULT
+http://127.0.0.1:7080/api/products
+[{"id":1,"name":"Product A","price":12.99},{"id":2,"name":"Product B","price":23.99},{"id":3,"name":"Product C","price":34.99}]
+
+>> Expose Service with Minikube
+
+Run the following command to expose the service:
+	minikube service product-service
+
+PS C:\dev\ProductMicroservice\k8s> minikube service product-service
+|-----------|-----------------|-------------|---------------------------|
+| NAMESPACE |      NAME       | TARGET PORT |            URL            |
+|-----------|-----------------|-------------|---------------------------|
+| default   | product-service |          80 | http://192.168.49.2:31240 |
+|-----------|-----------------|-------------|---------------------------|
+🏃  Starting tunnel for service product-service.
+|-----------|-----------------|-------------|------------------------|
+| NAMESPACE |      NAME       | TARGET PORT |          URL           |
+|-----------|-----------------|-------------|------------------------|
+| default   | product-service |             | http://127.0.0.1:56091 |
+|-----------|-----------------|-------------|------------------------|
+
+
+>
+SEE RESULT:
+
+http://127.0.0.1:56268/api/products
+[{"id":1,"name":"Product A","price":12.99},{"id":2,"name":"Product B","price":23.99},{"id":3,"name":"Product C","price":34.99}]
+

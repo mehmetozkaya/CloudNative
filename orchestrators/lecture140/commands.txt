@@ -1,0 +1,16 @@
+Combined Way of Creating Deployment and Services for Microservices
+----
+product.yaml
+
+>
+Apply the configuration
+    kubectl apply -f .\product.yaml
+
+deployment.apps/product unchanged
+service/product-service unchanged
+
+See that 2 files affected. You can delete and re-create your deployment and service objects with kubectl delete and apply commands.
+    kubectl delete -f .\product.yaml
+
+Verify
+    kubectl get all

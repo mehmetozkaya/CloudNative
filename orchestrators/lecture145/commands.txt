@@ -1,0 +1,18 @@
+Clean up resources
+----
+>1
+Delete host address
+	C:\Windows\System32\drivers\etc\hosts
+
+>2	
+	kubectl delete deployment my-app
+	kubectl delete service my-app-service
+	kubectl delete pod my-app-pod
+	kubectl delete ingress my-app-ingress
+
+Since we can't just delete the pods, we have to delete the deployments.
+	kubectl delete -f ./product.yaml
+
+>3
+Finally, stop Minikube with the command:
+	minikube stop

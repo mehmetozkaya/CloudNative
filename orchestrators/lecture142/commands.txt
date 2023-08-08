@@ -1,0 +1,94 @@
+Create ConfigMaps and Secrets for Microservice
+----
+Create a ConfigMap to store a basic configuration parameter, such as the log_level. 
+Create a file named log-level-configmap.yaml
+
+GOTO
+  product.yaml
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: log-level-configmap
+data:
+  log_level: "Information"
+
+---
+Create the Secret
+use a Secret to create api-key secret inside the pod.
+encode the secret value in base64:
+
+> open bash on vscode
+
+echo -n 'product-api-key' | base64
+cHJvZHVjdC1hcGkta2V5
+
+>
+Copy the output and create secret into product.yaml file
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: api-key-secret
+type: Opaque
+data:
+  api_key: cHJvZHVjdC1hcGkta2V5
+
+>>
+Update the deployment object to use the ConfigMap and Secret values as environment variables in the container:
+
+--product.yaml
+
+added below part into deployment:
+
+ env:
+    - name: LOG_LEVEL
+      valueFrom:
+        configMapKeyRef:
+          name: log-level-configmap
+          key: log_level
+    - name: API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: api-key-secret
+          key: api_key
+
+See that our pod injected 2 ENV Variables, 1 from configmap another from secret.
+
+>>
+Apply the updated all Deployment:\k8s> 
+    kubectl apply -f .\product.yaml
+
+	deployment.apps/product configured
+	service/product-service unchanged
+	ingress.networking.k8s.io/product-ingress unchanged
+	configmap/log-level-configmap created
+	secret/api-key-secret created
+
+>Check
+
+kubectl get secret
+NAME             TYPE     DATA   AGE
+api-key-secret   Opaque   1      27s
+
+kubectl get configmap
+NAME                  DATA   AGE
+kube-root-ca.crt      1      25h
+log-level-configmap   1      40s
+
+>>
+Modify .NET application to read these environment variables and use them as needed.
+These are typical ENV variables that we can use into our application.
+
+goto Program.cs
+
+Show how to get these values:
+
+var builder = WebApplication.CreateBuilder(args);
+
+var logLevel = Environment.GetEnvironmentVariable("LOG_LEVEL");
+var apiKey = Environment.GetEnvironmentVariable("API_KEY");
+
+So we can ConfigureLogging as per these logLevel and add api key into controllers.

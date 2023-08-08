@@ -1,0 +1,3 @@
+Create a Deployment on Kubernetes
+----
+product-deploy.yaml

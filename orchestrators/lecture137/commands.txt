@@ -1,0 +1,30 @@
+Create and Apply Deployment on Kubernetes
+----
+product-deploy.yaml
+
+Open 2. terminal to watch created pods on K8s
+	kubectl get pods -w
+
+>
+Apply the configuration
+    kubectl apply -f product-deploy.yaml
+
+>
+See Watch 
+
+kubectl get pods -w
+NAME         READY   STATUS    RESTARTS   AGE
+my-app-pod   0/1     Pending   0          0s
+my-app-pod   0/1     Pending   0          0s
+my-app-pod   0/1     ContainerCreating   0          
+my-app-pod   1/1     Running             0      
+
+>
+kubectl get pod
+NAME         READY   STATUS    RESTARTS   AGE
+my-app-pod   1/1     Running   0          63s
+
+>>
+Expose the Pod
+
+Create Kubernetes "Service" Objects

@@ -1,0 +1,128 @@
+ASP.NET Container Expose Port - CONFIGURE TO LISTEN - 0.0.0.0:8080
+---
+
+Todo List:
+Edit Program.cs
+Build Docker Image
+Run Docker Container
+Test running docker container on local docker env
+Tag Docker Image
+Publish image to a Registry: Docker Hub
+
+-----
+>
+goto Program.cs
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddSingleton<List<Product>>();
+
+	// Add the following for Kubernetes Deployment
+	var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+	var url = $"http://0.0.0.0:{port}";
+	builder.WebHost.UseUrls(url);
+
+var app = builder.Build();
+
+ADDED
+	// Add the following for Kubernetes Deployment
+	var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+	var url = $"http://0.0.0.0:{port}";
+	builder.WebHost.UseUrls(url);
+
+>>
+OTHER WAYS:
+ > dockerfile
+add ENV varible into DockerFile
+	https://github.com/dotnet/dotnet-docker/issues/3968
+
+ "environmentVariables": {
+        "ASPNETCORE_URLS": "https://+:443;http://+:80",
+        "ASPNETCORE_HTTPS_PORT": "44360"
+      },
+
+ >k8s deployment ENV variable inject
+ 	https://www.youtube.com/watch?v=63FLcPHUCPM
+ 	dk 46.11
+
+ 	kestrel__endpoints__http__url
+ 	http://0.0.0.0:80
+
+-----
+goto Code location
+
+>>
+Build Docker Image
+
+Run command at same directory level of Dockerfile:
+    docker build -t productservice .
+
+See available images:
+    docker images
+
+>>
+Run Docker Image
+You can run your app in a container using the following command:
+
+    docker run -d -p 8080:80 --name productservicecontainer productservice
+
+Check if the container is running by executing:
+    docker ps
+
+Hit Endpoint:
+http://localhost:8080/api/products
+[{"id":1,"name":"Product A","price":12.99},{"id":2,"name":"Product B","price":23.99},{"id":3,"name":"Product C","price":34.99}]
+
+Stop Running Container:
+    docker stop productservicecontainer
+    docker rm productservicecontainer
+
+>>
+Publish image to a Registry: Docker Hub
+
+Docker Hub is a central place to upload Docker images. 
+Many products, including Microsoft Azure, can create containers based on images in Docker Hub.
+
+Create a Docker Hub account if you don't have one: 
+	https://hub.docker.com/    
+
+>
+Step 1: Log in to Docker Hub
+Open a terminal or command prompt and run the following command to log in to Docker Hub:
+
+	docker login
+
+Enter your Docker Hub username and password when prompted.
+
+Username: mehmetozkaya
+Password: 
+Login Succeeded
+
+>
+Step 2: Tag your Docker image
+
+Find the IMAGE ID of your local Docker image by running:
+	docker images
+
+Tag your Docker image with your Docker Hub username and the desired repository name:
+	docker tag productservice mehmetozkaya/productservice:latest
+
+see tagged image
+	docker images
+
+>
+Step 3: Push the Docker image to Docker Hub
+Push the tagged Docker image to your Docker Hub repository:
+	docker push mehmetozkaya/productservice:latest
+
+Check
+	https://hub.docker.com/
+See
+	https://hub.docker.com/repository/docker/mehmetozkaya/productservice/general
+
+
+-----
+Ready to deploy into minikube
+
+

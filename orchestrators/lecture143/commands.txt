@@ -1,0 +1,58 @@
+Scale a Container Instance in Kubernetes
+----
+Start with watch pods
+	kubectl get pod -w
+
+Use the kubectl scale command to update the deployment with a number of pods to create.
+	kubectl scale --replicas=5 deployment/product
+
+>
+See watch - new 2 pod creating
+product-deploy-5d5ccb7569-khfs6   0/1     ContainerCreating   0          0s
+product-deploy-5d5ccb7569-qkrzn   0/1     ContainerCreating   0          0s
+
+>
+See latest pods
+	kubectl get pod
+
+>>
+if there's a failure Kubernetes will automatically restart the pods that were running before the failure.
+Let's see this resilience in action by deleting pod and then verifying that Kubernetes has restarted it.
+
+kubectl get pods
+product-deploy-5d5ccb7569-khfs6   0/1     ContainerCreating   0          0s
+product-deploy-5d5ccb7569-qkrzn   0/1     ContainerCreating   0          0s
+
+>
+Delete the pod by using the kubectl delete command. 
+  kubectl delete pod product-5b6cc765c4-hjpx4
+
+>see
+immediately stating the pod has been deleted.
+  kubectl get pods
+
+random string following the pod name has changed. 
+Indicating the pod is a new instance.
+
+>>
+To scale the instance back down, run the following command.
+
+	kubectl scale --replicas=1 deployment/product
+
+See WATCH
+
+product-deploy-5d5ccb7569-j9gvl   0/1     Terminating         0          2m26s
+product-deploy-5d5ccb7569-khfs6   0/1     Terminating         0          78s
+product-deploy-5d5ccb7569-khfs6   0/1     Terminating         0          78s
+product-deploy-5d5ccb7569-khfs6   0/1     Terminating         0          78s
+product-deploy-5d5ccb7569-4dcr8   0/1     Terminating         0          2m27s
+product-deploy-5d5ccb7569-4dcr8   0/1     Terminating         0          2m27s
+product-deploy-5d5ccb7569-4dcr8   0/1     Terminating         0          2m27s
+product-deploy-5d5ccb7569-qkrzn   0/1     Terminating         0          78s
+product-deploy-5d5ccb7569-qkrzn   0/1     Terminating         0          79s
+
+Both of these approaches modify the running configuration 
+  manually run kubectl scale
+  or change replica number.
+
+Solution: Auto-Scaling

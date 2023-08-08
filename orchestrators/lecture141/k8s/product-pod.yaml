@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: product-pod
+spec:
+  containers:
+  - name: product
+    image: mehmetozkaya/productservice:latest
+    ports:
+    - containerPort: 8080

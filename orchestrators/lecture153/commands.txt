@@ -1,0 +1,166 @@
+Getting Started with Helm - Launch Wordpress from ArtifactHub
+----
+>
+helm --help
+
+>
+helm repo --help
+
+Available Commands:
+  add         add a chart repository
+  index       generate an index file given a directory containing packaged charts
+  list        list chart repositories
+  remove      remove one or more chart repositories
+  update      update information of available charts locally from chart repositories
+
+>
+helm repo update --help
+
+>
+You can optionally specify a list of repositories you want to update.
+        $ helm repo update <repo_name> ...
+To update all the repositories, use 'helm repo update'.
+
+Usage:
+  helm repo update [REPO1 [REPO2 ...]] [flags]
+
+>
+If you have already installed, its good to update:
+  helm repo update
+
+>>
+Launch and deploy a Wordpress website into our K8s cluster
+
+Helm Chart Repository
+	https://artifacthub.io/
+
+Installing the Chart
+To install the chart with the release name my-release:
+
+helm repo add my-repo https://charts.bitnami.com/bitnami
+helm install my-release my-repo/wordpress
+
+Uninstalling the Chart
+To uninstall/delete the my-release deployment:
+
+helm delete my-release
+
+>>
+Deploy wordpress app with 2 commands
+
+--
+Before that make sure that your docker and minikube is started
+	docker start
+	minikube start
+	kubectl get pod
+--
+Install
+	helm repo add bitnami https://charts.bitnami.com/bitnami
+	helm install my-release bitnami/wordpress
+
+Uninstalling the Chart
+To uninstall/delete the my-release deployment:
+	helm delete my-release
+
+
+>> Run Commands on wt
+
+Your WordPress site can be accessed through the following DNS name from within your cluster:
+
+    my-release-wordpress.default.svc.cluster.local (port 80)
+
+To access your WordPress site from outside the cluster follow the steps below:
+
+1. Get the WordPress URL by running these commands:
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        Watch the status with: 'kubectl get svc --namespace default -w my-release-wordpress'
+
+   export SERVICE_IP=$(kubectl get svc --namespace default my-release-wordpress --template "{{ range (index .status.loadBalancer.ingress 0) }}{{ . }}{{ end }}")
+   echo "WordPress URL: http://$SERVICE_IP/"
+   echo "WordPress Admin URL: http://$SERVICE_IP/admin"
+
+2. Open a browser and access WordPress using the obtained URL.
+
+3. Login with the following credentials below to see your blog:
+
+  echo Username: user
+  echo Password: $(kubectl get secret --namespace default my-release-wordpress -o jsonpath="{.data.wordpress-password}" | base64 -d)
+PS C:\Users\PC>
+
+
+>>
+You can also confirm installed objects with kubectl commands.
+
+kubectl get pod
+NAME                                    READY   STATUS    RESTARTS      AGE
+hello-minikube-5b8bbb84c7-6grrn         1/1     Running   1 (17h ago)   19h
+my-release-mariadb-0                    1/1     Running   0             114s
+my-release-wordpress-54cf597d85-wwtnj   1/1     Running   0             114s
+product-deploy-5d5ccb7569-zxfhg         1/1     Running   1 (17h ago)   22h
+
+>
+See deployed wordpress website - port-forward your local
+
+	minikube service my-release-wordpress
+
+default   | my-release-wordpress |             | http://127.0.0.1:49789 |
+|           |                      |             | http://127.0.0.1:49790 |
+
+See wordpress page
+
+>
+Once a chart is deployed it is deployed as a release so to list all existing releases run the helm list command
+
+	helm list
+
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART          APP VERSION
+my-release      default         1               2023-04-12 14:15:34.1630586 +0300 +03   deployed        wordpress-15.3.6.2.0
+
+>
+Uninstalling the Chart
+To uninstall/delete the my-release deployment:
+
+	helm delete my-release
+
+the power of helm as a package manager for k8s.
+
+>
+verify
+PS C:\Users\PC> kubectl get pod
+NAME                              READY   STATUS    RESTARTS      AGE
+hello-minikube-5b8bbb84c7-6grrn   1/1     Running   1 (17h ago)   20h
+product-deploy-5d5ccb7569-zxfhg   1/1     Running   1 (17h ago)   22h
+
+----------------------------------
+TROUBLESHOOTING
+
+If you got this error on mariadb pod when check kubectl logs [mariadb_pod_name]:
+[bitnami/mariadb] ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES) #2634
+
+Follow steps below:
+>1
+Remove pv, and pvc on your k8s
+
+kubectl delete pvc --all
+kubectl delete pv --all
+
+kubectl get pv,pvc
+
+>2
+Remove helm repo of bitnami
+
+helm delete my-release
+helm repo remove bitnami
+helm repo list
+
+>3
+Install from scratch
+helm repo add my-repo https://charts.bitnami.com/bitnami
+helm install my-release bitnami/wordpress
+
+If it gets same error, you can "helm delete my-release" and re-install with command below.
+
+>4
+This time install with providing mariadb rootPassword: 
+helm install my-release --set wordpressUsername=admin --set wordpressPassword=password --set mariadb.auth.rootPassword=secretpassword oci://registry-1.docker.io/bitnamicharts/wordpress
