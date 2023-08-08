@@ -1,0 +1,60 @@
+Step 5. Simulate node failure and node scales
+----
+
+Github - CockroachDB Kubernetes Operator
+	https://github.com/cockroachdb/cockroach-operator
+
+>
+Check to example.yaml file
+
+# nodes refers to the number of crdb pods that are created
+# via the statefulset
+  nodes: 3
+
+>
+Based on the replicas: 3 line in the StatefulSet configuration, 
+	Kubernetes ensures that three pods/nodes are running at all times. 
+When a pod/node fails, Kubernetes automatically creates another pod/node with the same network identity and persistent storage.
+
+To see this in action:
+Watch Pods:
+Run Command:
+kubectl get pod --watch
+
+Terminate one of the CockroachDB nodes:
+Run Command:
+kubectl delete pod cockroachdb-2
+
+pod "cockroachdb-2" deleted
+
+>
+In the DB Console, the Cluster Overview will soon show one node as Suspect. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
+
+>
+Back in the terminal, verify that the pod was automatically restarted:
+
+kubectl get pod cockroachdb-2
+
+NAME            READY     STATUS    RESTARTS   AGE
+cockroachdb-2   1/1       Running   0          12s
+
+>
+Up-scale nodes
+Edit to example.yaml file
+
+# nodes refers to the number of crdb pods that are created
+# via the statefulset
+  nodes: 4 -- edit
+
+Apply example.yaml:
+kubectl apply -f example.yaml
+
+Check that the pods were created:
+kubectl get pods
+
+NAME                                  READY   STATUS    RESTARTS   AGE
+cockroach-operator-6f7b86ffc4-9t9zb   1/1     Running   0          3m22s
+cockroachdb-0                         1/1     Running   0          2m31s
+cockroachdb-1                         1/1     Running   0          102s
+cockroachdb-2                         1/1     Running   0          102s
+cockroachdb-3                         1/1     Running   0          102s

@@ -1,0 +1,71 @@
+Hands-on: Deploy Redis Cache in a Single Kubernetes Cluster with Minikube
+----
+
+Goto artifact hub -- find -> Redis
+	https://artifacthub.io/
+		searh Redis
+			Bitnami package for Redis(R)
+	        https://artifacthub.io/packages/helm/bitnami/redis
+    
+>
+Add the Bitnami repository to Helm:
+Run Command:
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+>
+Update your Helm chart repository:
+Run Command:
+helm repo update
+
+>
+Deploy Redis using the Bitnami Redis Helm chart on your Minikube:
+Run Command:
+helm install redis bitnami/redis
+
+This command will deploy Redis with default configurations. 
+
+>
+Check if the Redis pod and service are running:
+
+kubectl get pods
+kubectl get svc
+
+You should see a pod named my-redis-master-0 and a few my-redis-slave-* pods, all with status Running.
+
+>
+Use the built-in Redis Client - Run Redis Commands on Redis Interactive Terminal:
+
+>
+Get the Redis password from the Kubernetes Secret:
+Run Command:
+export REDIS_PASSWORD=$(kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" | base64 --decode)
+
+>
+Now, let's connect to the Redis instance to execute some commands. 
+You can connect using the Redis CLI from inside the Redis master pod:
+
+Connect to the Redis pod and run the Redis CLI:
+Run Command:
+--- If OAUTH Authentication required:
+kubectl exec -it redis-master-0 -- redis-cli -a $REDIS_PASSWORD
+
+You should now be at the Redis CLI prompt.
+
+>
+Run sample commands to set and get key-value pairs:
+
+set my_key "Hello, Redis!"
+get my_key
+
+You should see the output as:
+
+OK
+"Hello, Redis!"
+
+>7
+Exit the Redis CLI by typing exit and hitting Enter.
+
+
+>>
+Successfully deployed Redis to a Kubernetes cluster using minikube 
+	and performed basic set and get operations on key-value pairs.

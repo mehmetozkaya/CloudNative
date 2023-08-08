@@ -1,0 +1,24 @@
+Develop Lambda function for incoming event from Amazon SNS topic
+----
+check test template
+		sns-notification
+
+Also I had example incoming event : sns-notification-event.json
+
+
+>
+Lets develop lambda function:
+CODE:
+exports.handler = async (event) => {
+    console.log("event:", JSON.stringify(event, undefined, 2));
+    
+    var message = event.Records[0].Sns.Message;
+    console.log('Message received from SNS:', message);
+};
+
+>
+Deploy
+
+>
+Since this will asnyc invocation, we dont need to return anything.
+To be simple I only log incoming message.

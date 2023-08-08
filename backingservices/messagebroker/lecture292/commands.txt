@@ -1,0 +1,45 @@
+Stop the cluster - Clear Resources
+----
+
+Goto artifact hub -- find -> Kafka
+	https://artifacthub.io/
+		searh Kafka
+			Bitnami package for Kafka(R)
+	        https://artifacthub.io/packages/helm/bitnami/kafka
+
+>
+Uninstalling the Chart
+To uninstall/delete the my-kafka deployment:
+Run Command:
+helm uninstall my-kafka
+or
+helm delete my-kafka
+
+These commands will uninstall the Helm charts and delete the associated Kubernetes resources like Pods, Deployments, Services, and Persistent Volume Claims. However, Persistent Volumes might not be deleted automatically depending on your setup, so you might want to check and delete them manually if needed.
+
+>
+Verify pods:
+Run Command:
+kubectl get pod
+
+NAME            READY     STATUS    RESTARTS   AGE
+kafka-2   1/1       Running   0          12s
+
+>
+However, Persistent Volumes might not be deleted automatically depending on your setup, so you might want to check and delete them manually if needed.
+
+kubectl get pv,pvc
+
+kubectl delete pv --all
+kubectl delete pvc --all
+
+>>
+Stop Minikube
+Run Command:
+minikube stop
+
+>
+Also if you want to delete the Minikube cluster itself, you can do so with the following command:
+
+Run Command:
+minikube delete

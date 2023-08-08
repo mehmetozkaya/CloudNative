@@ -1,0 +1,33 @@
+Hands-on: Deploy Redis Cache in a Single Kubernetes Cluster with Minikube
+----
+
+Goto artifact hub -- find -> Redis
+	https://artifacthub.io/
+		searh Redis
+			Bitnami package for Redis(R)
+	        https://artifacthub.io/packages/helm/bitnami/redis
+    
+>
+Add the Bitnami repository to Helm:
+Run Command:
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+>
+Update your Helm chart repository:
+Run Command:
+helm repo update
+
+>
+Deploy Redis using the Bitnami Redis Helm chart on your Minikube:
+Run Command:
+helm install redis bitnami/redis
+
+This command will deploy Redis with default configurations. 
+
+>
+Check if the Redis pod and service are running:
+
+kubectl get pods
+kubectl get svc
+
+You should see a pod named my-redis-master-0 and a few my-redis-slave-* pods, all with status Running.

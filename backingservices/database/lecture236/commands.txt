@@ -1,0 +1,11 @@
+Hands-on: Building RESTful Microservices with AWS Lambda, API Gateway and DynamoDB
+----
+
+Request Body
+
+{
+    "id": "1",    
+    "title": "IPhone",
+    "description": "This is an IPhone",
+    "price": 900
+}

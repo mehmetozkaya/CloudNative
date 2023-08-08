@@ -1,0 +1,40 @@
+Step 6. Stop the cluster
+----
+
+Github - CockroachDB Kubernetes Operator
+	https://github.com/cockroachdb/cockroach-operator
+
+>
+To shut down the CockroachDB cluster:
+
+Delete the previously created custom resource:
+Run Command:
+kubectl delete -f example.yaml
+
+>
+Remove the Operator:
+Run Command:
+kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.10.0/install/operator.yaml
+
+This will delete the CockroachDB cluster being run by the Operator. It will not delete the persistent volumes that were attached to the pods.
+
+>
+Delete persistent volumes in Kubernetes
+Run Command:
+kubectl delete pvc data-p-0
+kubectl delete pv  <pv-name>  --grace-period=0 --force
+
+kubectl get pv,pvc
+
+kubectl delete pvc --all
+kubectl delete pv --all
+
+kubectl get pod
+kubectl delete pod --all
+
+kubectl get all
+
+>
+Stop Kubernetes
+Run Command:
+minikube stop

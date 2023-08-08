@@ -1,0 +1,52 @@
+Stop the cluster - Clear Resources
+----
+>
+Go to artifact page
+	https://artifacthub.io/packages/helm/bitnami/redis
+
+>>
+Uninstalling the Chart
+To uninstall/delete the my-redis deployment:
+Run Command:
+helm uninstall redis
+or
+helm delete redis
+
+These commands will uninstall the Helm charts and delete the associated Kubernetes resources like Pods, Deployments, Services, and Persistent Volume Claims. However, Persistent Volumes might not be deleted automatically depending on your setup, so you might want to check and delete them manually if needed.
+
+>
+Verify pods:
+Run Command:
+kubectl get pod
+
+NAME            READY     STATUS    RESTARTS   AGE
+redis-2   1/1       Running   0          12s
+
+
+>>
+However, Persistent Volumes might not be deleted automatically depending on your setup, so you might want to check and delete them manually if needed.
+
+kubectl get pv,pvc
+
+kubectl delete pvc --all
+kubectl delete pv --all
+
+kubectl get pod
+kubectl delete pod --all
+
+kubectl get all
+
+>>
+Stop the Cluster:
+Run Command:
+minikube stop
+
+
+>>
+Also if you want to delete the Minikube cluster itself, 
+	you can do so with the following command:
+
+Run Command:
+minikube delete
+
+This will delete the Minikube cluster and all associated resources. You can start a new Minikube cluster again anytime with minikube start.

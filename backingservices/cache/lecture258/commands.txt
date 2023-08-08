@@ -1,0 +1,47 @@
+Simulate Redis Node Failure and Node Scales
+----
+Redis operates in a master-slave architecture. 
+The master handles the writes and the slaves replicate the master node for reads. 
+This is also known as 'read' scaling.
+
+>
+For instance, if you want to increase the replicas to 3, use the following command:
+Run Command:
+helm upgrade redis bitnami/redis --set replica.replicaCount=4
+
+>
+Check the pods in your namespace, and you should see the new slave pods starting up:
+Run Command:
+kubectl get pods
+
+Now, you should see my-redis-slave-0, my-redis-slave-1 and my-redis-slave-2 (along with my-redis-master-0), all with status Running.
+
+>
+Remember that the newly created slaves are for read operations. 
+Scaling Redis for writes ('write' scaling) is more complex due to the nature of Redis' data model, 
+	and typically involves sharding data across multiple Redis instances.
+
+
+>>
+Simulate Redis Node Failures
+
+Kubernetes ensures that three pods/nodes are running at all times. 
+When a pod/node fails, Kubernetes automatically creates another pod/node with the same network identity and persistent storage.
+
+To see this in action: Watch Pods:
+Run Command:
+kubectl get pod --watch
+
+Terminate one of the CockroachDB nodes:
+Run Command:
+kubectl delete pod redis-replicas-2
+
+pod "redis-replicas-2" deleted
+
+>>
+Back in the terminal, verify that the pod was automatically restarted:
+Run Command:
+kubectl get pod
+
+NAME            READY     STATUS    RESTARTS   AGE
+redis-replicas-2   1/1       Running   0          12s

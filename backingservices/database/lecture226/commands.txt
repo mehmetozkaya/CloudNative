@@ -1,0 +1,77 @@
+Step 3. Use the built-in SQL client
+----
+
+Github - CockroachDB Kubernetes Operator
+	https://github.com/cockroachdb/cockroach-operator
+
+>
+To use the CockroachDB SQL client, first launch a secure pod running the cockroach binary.
+
+Examine and Explain yaml file:
+https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.10.0/examples/client-secure-operator.yaml
+
+Run Command:
+kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.10.0/examples/client-secure-operator.yaml
+
+>
+Get a shell into the pod and start the CockroachDB built-in SQL client:
+Run Command:
+kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach/cockroach-certs --host=cockroachdb-public
+
+>
+Get a shell into the pod and start the CockroachDB built-in SQL client:
+Run Command:
+kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach/cockroach-certs --host=cockroachdb-public
+
+# Welcome to the CockroachDB SQL shell.
+# All statements must be terminated by a semicolon.
+# To exit, type: \q.
+#
+# Server version: CockroachDB CCL v21.1.0 (x86_64-unknown-linux-gnu, built 2021/04/23 13:54:57, go1.13.14) (same version as client)
+# Cluster ID: a96791d9-998c-4683-a3d3-edbf425bbf11
+#
+# Enter \? for a brief introduction.
+#
+root@cockroachdb-public:26257/defaultdb>
+
+>
+Run some basic CockroachDB SQL statements:
+Run Command:
+
+CREATE DATABASE bank;
+
+CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+
+INSERT INTO bank.accounts VALUES (1, 1000.50);
+INSERT INTO bank.accounts VALUES (2, 2000.50);
+
+SELECT * FROM bank.accounts;
+
+  id | balance
++----+---------+
+   1 | 1000.50
+(1 row)
+
+
+>
+Additional SQL Commands:
+Run Command:
+
+SHOW TABLES;
+SHOW COLUMNS FROM bank.accounts;
+SELECT * FROM bank.accounts WHERE id in (1);
+DELETE FROM bank.accounts WHERE id = 2;
+SELECT * FROM bank.accounts;
+
+>>
+To access database from DB Console, we need to create a user and password:
+Create a user with a password:
+Run Command:
+CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
+
+You will need this username and password to access the DB Console later.
+
+>
+Exit the SQL shell and pod:
+Run Command:
+\q

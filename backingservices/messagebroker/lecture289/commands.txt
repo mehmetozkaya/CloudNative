@@ -1,0 +1,32 @@
+Hands-on: Deploy Kafka Cache in a Single Kubernetes Cluster with Minikube
+----
+Goto artifact hub -- find -> Kafka
+	https://artifacthub.io/
+		searh Kafka
+			Bitnami package for Kafka(R)
+	        https://artifacthub.io/packages/helm/bitnami/kafka
+    
+>
+Add the Bitnami repository to Helm:
+Run Command:
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+>
+Update your Helm chart repository:
+Run Command:
+helm repo update
+
+>
+Deploy Kafka using the Bitnami Kafka Helm chart on your Minikube:
+Run Command:
+helm install my-kafka bitnami/kafka
+
+This command will deploy Kafka with default configurations. 
+
+>
+Check if the Kafka pod and service are running:
+
+kubectl get pods
+kubectl get svc
+
+You should see a pod named my-kafka-0 all with status Running.

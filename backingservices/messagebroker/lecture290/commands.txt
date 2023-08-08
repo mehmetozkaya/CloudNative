@@ -1,0 +1,46 @@
+Use the built-in Kafka Client - Publish and Subscribe Topic with sending message to topic
+----
+>>
+Use the built-in Kafka Client - Run Kafka Commands on Kafka Interactive Terminal:
+Publish and Subscribe Topic with sending message to topic:
+
+To interact with Kafka, we can create a Kafka producer and consumer from the Kafka pod.
+
+>
+Create Topic:
+kubectl exec -it my-kafka-0 -- kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic mytopic
+
+"mytopic" is created.
+
+>
+Create Publisher Client:
+Send a message to the "mytopic" topic:
+kubectl exec -it my-kafka-0 -- kafka-console-producer.sh --broker-list localhost:9092 --topic mytopic
+
+>
+Create Subscriber Client: - open another command window
+Consume the message from the "mytopic" topic:
+kubectl exec -it my-kafka-0 -- kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mytopic --from-beginning
+
+
+>>Console1-Producer
+
+Enter a message, for example:
+Hello, Kafka!
+
+
+>>Console2-Consumer
+
+See Consumer Console
+You should see the message you sent earlier:
+Hello, Kafka!
+test1
+test2
+
+>
+Exit the Kafka CLI
+Press CTRL+C to exit the both command windows.
+
+>>
+Successfully deployed Kafka to a Kubernetes cluster using minikube 
+	and performed basic pub/sub operations on topic.

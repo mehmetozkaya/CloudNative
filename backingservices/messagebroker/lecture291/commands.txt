@@ -1,0 +1,51 @@
+Simulate Kafka Node Failure and Node Scales
+----
+>>
+goto:
+	https://artifacthub.io/packages/helm/bitnami/kafka
+See
+	Default Values
+
+Search
+	replicaCount=1
+
+See Github source code of helm chart:
+	https://github.com/bitnami/charts/blob/main/bitnami/kafka/values.yaml
+
+>>
+Run Command:
+helm upgrade my-kafka bitnami/kafka --set replicaCount=3
+
+>
+Check the pods, and you should see the new pods starting up:
+
+Run Command:
+kubectl get pods
+
+Now, you should see my-kafka-0, my-kafka-1 and my-kafka-2, all with status Running.
+
+
+>>
+Simulate Redis Node Failures
+
+Kubernetes ensures that three pods/nodes are running at all times. 
+When a pod/node fails, Kubernetes automatically creates another pod/node with the same network identity and persistent storage.
+
+To see this in action:
+Watch Pods:
+Run Command:
+kubectl get pod --watch
+
+Terminate one of the Kafka nodes:
+Run Command:
+kubectl delete pod my-kafka-2
+
+pod "my-kafka-2" deleted
+
+>>
+Back in the terminal, verify that the pod was automatically restarted:
+
+kubectl get pod
+
+NAME            READY     STATUS    RESTARTS   AGE
+my-kafka-2   1/1       Running   0          12s

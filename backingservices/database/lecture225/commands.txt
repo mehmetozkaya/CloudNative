@@ -1,0 +1,53 @@
+Step 2.1 Start CockroachDB - Initialize the cluster - Apply the custom resource of CockroachDB
+----
+>
+Validate that the Operator is running:
+Run Command:
+kubectl get pod -n cockroach-operator-system
+
+NAME                                  READY   STATUS    RESTARTS   AGE
+cockroach-operator-6f7b86ffc4-9ppkv   1/1     Running   0          54s
+
+
+>>
+Initialize the cluster
+
+Download example.yaml, a custom resource that tells the Operator how to configure the Kubernetes cluster.
+
+curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.10.0/examples/example.yaml
+
+Examine and Explain yaml file:
+https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.10.0/examples/example.yaml
+
+>
+Create "example.yaml" file
+
+copy-paste
+
+>
+Increase Node count - 4 
+Hands-on Architecture Image has 4 node in a single kubernetes cluster
+
+>
+Apply the example.yaml file: 
+Open command window and goto location
+
+Run Command:
+kubectl apply -f example.yaml
+
+The Operator will create a StatefulSet and initialize the nodes as a cluster.
+
+crdbcluster.crdb.cockroachlabs.com/cockroachdb created
+
+>>
+Check that the pods were created:
+Run Command:
+kubectl get pods
+
+NAME                                  READY   STATUS    RESTARTS   AGE
+cockroach-operator-6f7b86ffc4-9t9zb   1/1     Running   0          3m22s
+cockroachdb-0                         1/1     Running   0          2m31s
+cockroachdb-1                         1/1     Running   0          102s
+cockroachdb-2                         1/1     Running   0          46s
+
+Each pod should have READY status soon after being created.

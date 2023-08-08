@@ -1,0 +1,27 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:us-east-2:308360398142:testTopic:dcce19d9-d904-4986-89ba-3d89a450df66",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "428dd3f1-2e2e-53fc-8c78-88e39f1f2175",
+                "TopicArn": "arn:aws:sns:us-east-2:308360398142:testTopic",
+                "Subject": "testMessage",
+                "Message": "testMessage",
+                "Timestamp": "2022-06-02T12:37:05.595Z",
+                "SignatureVersion": "1",
+                "Signature": "G8uevs3OQ8cWzhPBBDYpzSnUo967ji26ZkEKq05SmBnr97HTWfY3bDIpZh9QlsnpABjm2drMtJlvefxNg5TkeodR00hAvVAEfe/nN1WLIgaNb5aXnVL1dZqR8jtLZiFaIqg8cz9nfPXuZs24Wt9oSd6wKt0jdg+a5KW1Wvk4OtnHDU5JIhdakr1SVsTq3HSvxvuBzfv6PpEjug0zeXQmCmyYjs6PQMrbEUzCEnhMLVaOmYs3eQBN++swMW3TUAatMP9BZy+FuzToP3BIaBC+5RX5kmD37a5mPSmFiBAuIF1zYH0vxK+6TTqZiHlpei4QSiQhVIK1McvMd44LO4G85w==",
+                "SigningCertUrl": "https://sns.us-east-2.amazonaws.com/SimpleNotificationService-7ff5318490ec183fbaddaa2a969abfda.pem",
+                "UnsubscribeUrl": "https://sns.us-east-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-2:308360398142:testTopic:dcce19d9-d904-4986-89ba-3d89a450df66",
+                "MessageAttributes": {
+                    "attr1": {
+                        "Type": "String",
+                        "Value": "val1"
+                    }
+                }
+            }
+        }
+    ]
+}

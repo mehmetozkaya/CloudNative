@@ -1,0 +1,44 @@
+Step 4. Access the DB Console
+----
+Github - CockroachDB Kubernetes Operator
+	https://github.com/cockroachdb/cockroach-operator
+
+>>
+To access database from DB Console, we need to create a user and password:
+Create a user with a password:
+Run Command:
+CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
+
+>>
+To access the cluster's DB Console:
+On secure clusters, certain pages of the DB Console can only be accessed by admin users.
+
+Get a shell into the pod and start the CockroachDB built-in SQL client:
+Run Command:
+kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach/cockroach-certs --host=cockroachdb-public
+
+Assign roach to the admin role (you only need to do this once):
+Run Command:
+GRANT admin TO roach;
+
+Exit the SQL shell and pod:
+\q
+
+>
+In a new terminal window, port-forward from your local machine to the cockroachdb-public service:
+Run Command:
+kubectl port-forward service/cockroachdb-public 8080
+
+Forwarding from 127.0.0.1:8080 -> 8080
+
+>
+Go to https://localhost:8080 and log in with the username and password you created earlier.
+
+USER: roach
+PASSWORD: Q7gc8rEdS
+
+>
+In the UI, verify that the cluster is running as expected:
+
+View the Node List to ensure that all nodes successfully joined the cluster.
+Click the Databases tab on the left to verify that bank is listed.

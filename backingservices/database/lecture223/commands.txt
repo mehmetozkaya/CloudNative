@@ -1,0 +1,48 @@
+Deploy CockroachDB in a Single Kubernetes Cluster with Kubernetes Operator and minikube
+----
+
+Github - CockroachDB Kubernetes Operator
+	https://github.com/cockroachdb/cockroach-operator
+
+>
+Install the Operator
+Apply the custom resource definition (CRD) for the Operator:
+
+Run Command:
+kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.10.0/install/crds.yaml
+
+customresourcedefinition.apiextensions.k8s.io/crdbclusters.crdb.cockroachlabs.com created
+
+>
+By default, the Operator is configured to install in the "cockroach-operator-system" namespace and to manage CockroachDB instances for all namespaces on the cluster.
+If you'd like to change either of these defaults settings:
+
+Download the Operator manifest:
+curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.10.0/install/operator.yaml
+
+Examine and Explain yaml file:
+https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.10.0/install/operator.yaml
+
+>
+Continue with Defaults:
+Run Command:
+kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.10.0/install/operator.yaml
+
+clusterrole.rbac.authorization.k8s.io/cockroach-database-role created
+serviceaccount/cockroach-database-sa created
+clusterrolebinding.rbac.authorization.k8s.io/cockroach-database-rolebinding created
+role.rbac.authorization.k8s.io/cockroach-operator-role created
+clusterrolebinding.rbac.authorization.k8s.io/cockroach-operator-rolebinding created
+clusterrole.rbac.authorization.k8s.io/cockroach-operator-role created
+serviceaccount/cockroach-operator-sa created
+rolebinding.rbac.authorization.k8s.io/cockroach-operator-default created
+deployment.apps/cockroach-operator created
+
+>
+Validate that the Operator is running:
+Run Command:
+kubectl get pods
+
+NAME                                  READY   STATUS    RESTARTS   AGE
+cockroach-operator-6f7b86ffc4-9ppkv   1/1     Running   0          54s
+
