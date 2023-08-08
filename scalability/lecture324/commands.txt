@@ -1,0 +1,190 @@
+Step 3. Kubernetes Event-Driven Autoscaling (KEDA) to auto scale pods on a Kubernetes cluster using Minikube
+----
+In this hands-on, We will use KEDA to autoscale pods based on the number of messages in a Kafka topic in a Minikube Kubernetes cluster.
+KEDA also supports Kafka as an event source for scaling. 
+For this example, we'll have a simple producer pushing messages to a Kafka topic, and a consumer that consumes these messages. 
+KEDA will scale the consumer pods based on the number of messages in the Kafka topic.
+
+>
+Step 1: Start Minikube
+
+Start your Minikube cluster by running:
+
+minikube start
+
+>
+Step 2: Install KEDA using Helm
+
+Add the KEDA Helm repo:
+Run Command:
+helm repo add kedacore https://kedacore.github.io/charts
+
+>
+Update the Helm repo:
+Run Command:
+helm repo update
+
+>
+Install KEDA using Helm:
+Run Command:
+kubectl create namespace keda
+helm install keda kedacore/keda --namespace keda
+
+>
+Verify KEDA Operators:
+Run Command:
+kubectl get pod,svc,deployment --namespace keda
+
+
+>
+Step 3: Deploy Kafka
+
+For this example, we will deploy Kafka using Helm:
+
+Run Command:
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+kubectl create namespace kafka
+helm install kafka bitnami/kafka --namespace kafka
+
+>
+Verify Kafka Operators:
+Run Command:
+kubectl get pod,svc,deployment --namespace kafka
+
+Wait for a few minutes until Kafka is up and running.
+
+>>
+Step 4: Deploy a Sample Consumer Application
+
+We will deploy a kafka consumer app to read and process Kafka messages on-demand using KEDA.
+Create a deployment file named consumer-deployment.yaml:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-deployment
+spec:
+  replicas: 0 # Initially set to 0 as KEDA will scale this
+  selector:
+    matchLabels:
+      app: consumer
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      containers:
+      - name: consumer
+        image: bitnami/kafka:latest
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo "Starting consumer..."
+          kafka-console-consumer.sh --bootstrap-server kafka.kafka.svc.cluster.local:9092 --topic mytopic
+
+See that we use kafka image and run kafka-consumer sh command to read mytopic data from kafka.
+NOTE THAT REPLICA = 0 
+That means we would like to create pods as per on-demand of kafka topic messages.
+
+Apply the deployment:
+Run Command:
+kubectl apply -f consumer-deployment.yaml
+
+
+>
+Step 5: Configure KEDA to Scale Based on Kafka Topic Length
+Run Command:
+Create a kafka-scaledobject.yaml file:
+
+>
+Apply the ScaledObject configuration:
+Run Command:
+kubectl apply -f kafka-scaledobject.yaml
+
+>
+Verify
+Run Command:
+kubectl get scaledobject
+
+
+>
+Step 6: Simulate Load
+
+See that there is no any pod about kafka consumer yet, because there is no message into our kafka
+Run Command:
+kubectl get pod
+
+This is our kafka cluster:
+kubectl get pod -n kafka
+
+
+Now let’s simulate some load by producing messages to the Kafka topic: --before at observe the scaling Step7
+Run Command:
+
+kubectl run kafka-producer -ti --image=bitnami/kafka --namespace=kafka -- bash
+# Inside the container run
+
+--- WAIT for a while to connect kafka
+
+kafka-console-producer.sh --broker-list kafka.kafka.svc.cluster.local:9092 --topic mytopic
+# Now type messages and send
+
+>
+If you close your terminal - you can attach producer again and send random message
+PS C:\Users\PC> kubectl attach kafka-producer -ti --namespace=kafka
+If you don't see a command prompt, try pressing enter.
+I have no name!@kafka-producer:/$ kafka-console-producer.sh --broker-list kafka.kafka.svc.cluster.local:9092 --topic mytopic
+>sdsf
+
+>sdf
+>sdf
+>sdf
+>s
+>df
+>sdf
+>d
+>d
+>d
+>d
+
+>
+Step 7: Observe the Scaling
+You can observe the autoscaling by looking at how the number of pods changes based on the number of messages in the Kafka topic.
+
+Run Command:
+kubectl get pods -w
+
+
+NAME                              READY   STATUS    RESTARTS        AGE
+hello-minikube-5b8bbb84c7-6grrn   1/1     Running   10 (131m ago)   57d
+consumer-deployment-765b46f87-4xfnl   0/1     Pending   0               0s
+consumer-deployment-765b46f87-4xfnl   0/1     Pending   0               0s
+consumer-deployment-765b46f87-4xfnl   0/1     ContainerCreating   0               0s
+consumer-deployment-765b46f87-4xfnl   1/1     Running             0               19s
+
+See that consumer pods are autoscale based on Kafka topic messages.
+
+
+
+>Step 8: Clean Up
+Once you are done with the lab, you can delete the resources created:
+
+Close all terminals
+
+kubectl delete -f consumer-deployment.yaml
+kubectl delete -f kafka-scaledobject.yaml
+helm uninstall kafka --namespace kafka
+kubectl delete namespace kafka
+helm uninstall keda --namespace keda
+kubectl delete namespace keda
+
+This will delete the KEDA ScaledObject and the deployment, respectively. Finally, stop the Minikube cluster by running:
+
+minikube stop
+
+
+>>
+This hands-on lab has shown you how to use Kubernetes Event-Driven Autoscaling (KEDA) to scale pods in a Kubernetes cluster using Minikube. 
+We used KEDA to autoscale pods based on the number of messages in a Kafka topic in a Minikube Kubernetes cluster.

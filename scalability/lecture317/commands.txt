@@ -1,0 +1,173 @@
+Step 2. Horizontal Pod Autoscaler (HPA) to auto scale pods on a Kubernetes cluster using Minikube
+----
+>
+1: Install and start Minikube
+
+Start Minikube by running the following command:
+Run Commands:
+minikube start
+
+>>
+2: Deploy a sample application
+nginx-deployment.yaml
+
+Deploy the sample application using kubectl:
+Run Command:
+kubectl apply -f nginx-deployment.yaml
+
+>
+3: Expose the application with a Service
+
+Create a service configuration named nginx-service.yaml:
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+
+
+Deploy the service using kubectl:
+Run Command:
+kubectl apply -f nginx-service.yaml
+
+
+Verify Service
+Run Command:
+kubectl get svc
+
+>
+4: Enable the metrics server in Minikube
+
+The HPA requires metrics to make scaling decisions. 
+Enable the metrics server in Minikube by running:
+Run Command:
+minikube addons list
+
+| metrics-server              | minikube | disabled     | Kubernetes
+
+Run Commands:
+minikube addons enable metrics-server
+
+Wait for a minute or two for the metrics server to start.
+
+>
+Verify metric server
+Run Commands:
+minikube addons list
+
+>
+5: Create the HPA configuration
+
+Create a file named nginx-hpa.yaml with the following content:
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50
+
+
+This configuration sets the target CPU utilization to 50% and allows the number of replicas to scale between 1 and 5.
+
+>
+Deploy the HPA using kubectl:
+Run Command:
+kubectl apply -f nginx-hpa.yaml
+
+HPA will now manage the number of replicas based on CPU utilization.
+
+
+>
+6: Verify and Monitor the HPA
+
+To Verify and monitor the HPA, run the following command:
+RunCommand:
+kubectl get hpa
+NAME        REFERENCE                     TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+nginx-hpa   Deployment/nginx-deployment   <unknown>/50%   1         5         0          5s
+
+This will show the current number of replicas, target CPU utilization, and current CPU utilization.
+
+>
+7: Generate load to trigger scaling
+
+To generate load and trigger the HPA to scale the number of replicas, run the following command:
+
+RunCommand:
+kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- sh -c "while sleep 0.01; do wget -q -O- http://nginx-service.default.svc.cluster.local; done"
+
+See logs on terminal.
+This command creates a temporary pod that generates load by continuously sending requests to the sample application. 
+Keep this terminal open to maintain the load.
+
+
+>
+8: Observe the scaling
+
+With the load generator running, you should see the HPA scaling up the number of replicas in response to the increased CPU utilization. 
+To observe this, OPEN a NEW TERMINAL and run:
+
+RunCommand:
+kubectl get hpa --watch
+
+NAME        REFERENCE                     TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+nginx-hpa   Deployment/nginx-deployment   0%/50%    1         5         1          2m43s
+
+
+This command will continuously show the current status of the HPA. 
+You should see the number of replicas increase as the CPU utilization goes above the target value.
+
+>
+See pods - OPEN a NEW TERMINAL
+kubectl get pod --watch
+
+>
+9: Stop the load generator
+
+To stop the load generator, switch back to the terminal where the load generator is running and press Ctrl+C. 
+This will terminate the pod and stop generating load.
+
+>
+10: Observe the scaling down
+
+With the load generator stopped, the CPU utilization should drop, and the HPA should start scaling down the number of replicas. 
+You can continue watching the HPA status in the terminal where you ran the 'watch' command.
+
+If you look at the pods, down-scale our pod and return back to 1 pod count.
+
+>
+11: Clean up
+
+Once you are done, you can remove the resources created during this lab by running:
+
+kubectl delete -f nginx-hpa.yaml
+kubectl delete -f nginx-service.yaml
+kubectl delete -f nginx-deployment.yaml
+
+or
+delete -f lecture317
+
+This will delete the HPA, the service, and the deployment, respectively. 
+
+Verify
+kubectl get pod,svc,deployment
+
+>
+Finally, stop the Minikube cluster by running:
+
+minikube stop

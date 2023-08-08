@@ -1,0 +1,102 @@
+Step 1. Manually Horizontal and Vertical scaling pods into Kubernetes Cluster with Minikube 
+----
+>>
+1: Start Minikube
+Start Minikube by running the following command:
+minikube start
+
+>>
+2: Deploy a sample application
+
+For this lab, we will deploy a simple Nginx web server.
+Create a deployment file named nginx-deployment.yaml:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+          requests:
+            cpu: 250m
+            memory: 64Mi
+        ports:
+        - containerPort: 80
+
+>
+Deploy the sample application using kubectl:
+
+kubectl apply -f nginx-deployment.yaml
+
+>
+Verify pods and deployments
+
+kubectl get pod,deployment
+
+>>
+3: Manually perform Horizontal Scaling
+
+To manually scale the number of replicas for the sample application, run the following command:
+
+kubectl scale deployment nginx-deployment --replicas=3
+
+deployment.apps/nginx-deployment scaled
+
+>
+This command increases the replica count to 3. To verify that the scaling operation was successful, run:
+
+kubectl get deployments
+kubectl get pod -w
+
+>
+Verify that the number of pods has increased:
+
+kubectl get pod
+
+
+>>
+4: Manually perform Vertical Scaling
+
+To manually scale the resources allocated to each replica, edit the yaml file and modify the limits and requests sections:
+
+Edit the deployment to increase the resources allocated to each container. 
+Edit the nginx-deployment.yaml file to include resource requests and limits:
+
+I have increased memory requested and memory limit:
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
+  requests:
+    cpu: "250m"
+    memory: "128Mi"
+
+
+>
+Apply the changes to the deployment:
+
+kubectl apply -f nginx-deployment.yaml
+
+>
+Verify that the resources have been updated by running:
+
+kubectl get deployments nginx-deployment -o yaml
+
+
+Look for the updated resources section in the output.

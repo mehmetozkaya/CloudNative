@@ -1,0 +1,16 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: kafka-consumer-scaledobject
+spec:
+  scaleTargetRef:
+    name: consumer-deployment
+  minReplicaCount: 1  
+  maxReplicaCount: 5  
+  triggers:
+  - type: kafka
+    metadata:
+      bootstrapServers: kafka.kafka.svc.cluster.local:9092
+      consumerGroup: my-group
+      topic: mytopic
+      lagThreshold: "5"

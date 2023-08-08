@@ -1,0 +1,41 @@
+Remember Product Microservice
+----
+>>
+goto Product folder - cmd
+	dotnet run
+		see
+		Now listening on: http://0.0.0.0:8080
+
+>>
+Check code
+	Product CRUD operations dotnet web api microservices
+	Program.cs - Read and Explain
+
+See Dockerfile
+
+>>
+Start Docker
+
+docker images
+REPOSITORY                                                    TAG       IMAGE ID       CREATED        SIZE
+productservice                                                latest    fc6bad673f30   8 weeks ago    212MB
+
+See that we have alread build docker image before.
+
+>>
+Build the Docker Image: 
+Navigate to the directory where your Dockerfile is located and build the Docker image. 
+Replace your-image-name with the name you want to give to your Docker image.
+
+goto location and 
+PS C:\dev\CloudNative\scalability\lecture324\ProductService> 
+  docker build -t productservice .
+
+Verify
+docker images
+REPOSITORY                                                    TAG       IMAGE ID       CREATED        SIZE
+productservice                                                latest    fc6bad673f30   8 weeks ago    212MB
+
+>>
+See DockerHub
+	https://hub.docker.com/r/mehmetozkaya/productservice

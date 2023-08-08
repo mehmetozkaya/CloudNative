@@ -1,0 +1,37 @@
+Step 1. Installing or updating eksctl to interact Kubernetes Cluster on EKS
+----
+>>
+Getting started with Amazon EKS
+	https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
+
+>
+Verify kubectl, awscli
+
+Configure AWS CLI
+Make sure your AWS CLI is configured with the correct credentials.
+aws --version
+kubectl version
+
+>>
+Installing or updating eksctl
+	https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html
+
+GitHub Official Installation
+	https://github.com/eksctl-io/eksctl/blob/main/README.md#installation
+	
+>>
+For Windows:
+Direct download (latest release): AMD64/x86_64 - ARMv6 - ARMv7 - ARM64¶
+
+Make sure to unzip the archive to a folder in the PATH variable.
+
+Copy and paste into C:/tools
+
+Check ENV Variables - Path -- see C:\tools
+
+>
+Open WT
+Run Command:
+eksctl 
+
+see its working now.

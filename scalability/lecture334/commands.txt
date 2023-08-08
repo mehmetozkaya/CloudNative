@@ -1,0 +1,94 @@
+Clean Up Resources - IMPORTANT
+----
+>>>
+To clean up the ECR (Elastic Container Registry) Repository and EKS (Elastic Kubernetes Service) Cluster, 
+you can follow these steps:
+
+Cleaning up the ECR Repository:
+>1
+Delete Images: 
+First, you need to delete the images that are stored in your ECR repository. 
+You can do this using the AWS Management Console, AWS CLI, or SDKs. 
+Here's an example using the AWS CLI:
+
+Run Command:
+aws ecr batch-delete-image --repository-name productservice --image-ids imageTag=latest
+
+>2
+Delete Repository: 
+Once you've removed the images, you can delete the repository itself.
+
+Run Command:
+aws ecr delete-repository --repository-name productservice
+
+>>>
+Cleaning up the EKS Cluster:
+
+>1
+Delete yaml files
+
+Run Command:
+kubectl delete -f .\product-deploy.yaml
+kubectl delete -f .\product-service.yaml
+
+kubectl delete -f .\nginx-deployment.yaml
+kubectl delete -f .\nginx-service.yaml
+
+>2
+Delete the EKS Cluster: 
+You can delete the EKS cluster through the AWS Management Console, or by using the AWS CLI. 
+Here’s how to do it using the AWS CLI:
+
+Run Command:
+eksctl delete cluster --name my-eks-cluster --region us-east-2
+
+TAKES 5 MIN TO DELETE
+
+PS C:\Users\PC> eksctl delete cluster --name my-eks-cluster --region us-east-2
+2023-06-09 14:23:09 [ℹ]  deleting EKS cluster "my-eks-cluster"
+2023-06-09 14:23:10 [ℹ]  deleting Fargate profile "fp-default"
+2023-06-09 14:27:28 [ℹ]  deleted Fargate profile "fp-default"
+2023-06-09 14:27:28 [ℹ]  deleted 1 Fargate profile(s)
+2023-06-09 14:27:30 [✔]  kubeconfig has been updated
+2023-06-09 14:27:30 [ℹ]  cleaning up AWS load balancers created by Kubernetes objects of Kind Service or Ingress
+2023-06-09 14:27:32 [ℹ]  1 task: { delete cluster control plane "my-eks-cluster" [async] }
+2023-06-09 14:27:33 [ℹ]  will delete stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 14:27:34 [✔]  all cluster resources were deleted
+
+>3
+Delete CloudFormation Stack: goto Console and Delete from console
+
+eksctl-my-eks-cluster-cluster DELETE_IN_PROGRESS
+
+MAKE SURE CF IS DELETED
+
+If you created your worker nodes as a CloudFormation stack, 
+you should delete that stack:
+
+Run Command:
+aws cloudformation delete-stack --stack-name my-worker-nodes
+
+If you created a VPC and other networking resources specifically for this cluster, you should also delete these. If you used a CloudFormation template to create them, you can delete the stack:
+
+Run Command:
+aws cloudformation delete-stack --stack-name my-vpc-stack
+
+>>
+Delete IAM Roles: 
+If you created IAM roles specifically for the EKS cluster and don’t plan on using them for anything else, you should delete these roles.
+
+GOTO CONSOLE - IAM - ROLES
+SEE
+eksctl-my-eks-cluster-cluster-ServiceRole-F5P27ZGHS4N8
+
+DELETE THIS ROLE
+
+>5
+Delete kubeconfig 
+
+Note - Not requires, its done by AWS when deleting cluster.
+In case it doesn't work:
+Remove the cluster information from your kubeconfig file, by default ~/.kube/config:
+
+kubectl config delete-context my-eks-cluster
+kubectl config delete-cluster my-eks-cluster

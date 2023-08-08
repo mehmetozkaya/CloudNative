@@ -1,0 +1,87 @@
+Step 4. Create an ECR repository and Push Docker Image to Container Registry
+----
+>>
+First, create an ECR repository if you haven't already:
+
+aws ecr create-repository --repository-name productservice
+
+Check Console
+	goto ecr
+
+View Push Commands
+
+>>
+Follow Push Commands: Push Docker Image to Container Registry: 
+Push the Docker image to a container registry like AWS Elastic Container Registry (ECR). 
+
+
+>1
+Retrieve an authentication token and authenticate your Docker client to your registry.
+Authenticate Docker to the Amazon ECR registry:
+Use the AWS CLI:
+
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin xxxxxxx.dkr.ecr.us-east-2.amazonaws.com
+
+Login Succeeded
+
+>2
+Build your Docker image using the following command. For information on building a Docker file from scratch see the instructions here . You can skip this step if your image is already built:
+we have aldread built it
+See
+docker image
+
+Verify
+docker images
+REPOSITORY                                                    TAG       IMAGE ID       CREATED        SIZE
+productservice                                                latest    fc6bad673f30   8 weeks ago    212MB
+
+
+>3
+Tag your image:
+After the build completes, tag your image so you can push the image to this repository:
+
+docker tag productservice:latest xxxxxxx.dkr.ecr.us-east-2.amazonaws.com/productservice:latest
+
+See tagged image
+PS C:\Users\PC> docker images
+REPOSITORY                                                    TAG       IMAGE ID       CREATED         SIZE
+xxxxxxx.dkr.ecr.us-east-2.amazonaws.com/productservice   latest    50eb6f789c6d   8 minutes ago   213MB
+
+>4
+Push it to ECR:
+Run the following command to push this image to your newly created AWS repository:
+
+docker push xxxxxxx.dkr.ecr.us-east-2.amazonaws.com/productservice:latest
+
+Takes 5 min
+PS C:\Users\PC> docker push xxxxxxx.dkr.ecr.us-east-2.amazonaws.com/productservice:latest
+The push refers to repository [xxxxxxx.dkr.ecr.us-east-2.amazonaws.com/productservice]
+28ec29a07b84: Pushed
+5fb3bed8072f: Pushed
+03331f5df940: Pushed
+7eceb3e30935: Pushed
+65adefbb1795: Pushed
+b681f1ff1a0f: Pushed
+8cbe4b54fa88: Pushed
+latest: digest: xxxxxxx
+
+>
+Verify
+
+aws ecr list-images --repository-name productservice
+{
+    "imageIds": [
+        {
+            "imageDigest": "sha256:xxxxxxx",
+            "imageTag": "latest"
+        }
+    ]
+}
+
+See console
+Image URI
+xxxxxxx.dkr.ecr.us-east-2.amazonaws.com/productservice:latest
+
+Copy this
+
+We will use this when deploying product microservices on EKS Kubernetes cluster.

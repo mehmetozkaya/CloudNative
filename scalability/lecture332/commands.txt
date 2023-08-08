@@ -1,0 +1,154 @@
+Step 5. Deploy Product microservices on EKS Cluster w/ Fargate using eksctl
+----
+>>
+Create Kubernetes Manifests: 
+You'll need at least two Kubernetes manifests - one for the Deployment and one for the Service. 
+
+goto K8s folder
+See deployment and service yaml files.
+
+Edit deployment.yaml:
+Change image:
+
+OLD
+   spec:
+      containers:
+      - name: product
+        image: mehmetozkaya/productservice:latest
+        ports:
+        - containerPort: 8080
+
+NEW
+
+    spec:
+      containers:
+      - name: product
+        image: xxxxxxx.dkr.ecr.us-east-2.amazonaws.com/productservice:latest
+        ports:
+        - containerPort: 8080
+
+>
+Edit2
+
+product-service.yaml
+  ports:
+    - protocol: TCP
+      port: 80  --------- Change 80 
+      targetPort: 8080
+  type: LoadBalancer
+
+>>
+Deploy Product microservices to EKS: 
+Apply the Kubernetes manifests to your EKS cluster:
+goto k8s folder-cmd
+
+Run Command:
+kubectl apply -f product-deploy.yaml
+kubectl apply -f product-service.yaml
+
+deployment.apps/product created
+service/product-service created
+
+>
+Verify
+Run Command:
+kubectl get pod,deploy,svc
+
+See 3 pod created
+
+PS C:\Users\PC> kubectl get pod,deploy,svc
+NAME                                    READY   STATUS    RESTARTS   AGE
+pod/nginx-deployment-5c68889b77-t8xvr   1/1     Running   0          98m
+pod/product-85dc7c584f-7c9mw            1/1     Running   0          54s
+pod/product-85dc7c584f-xv8t6            1/1     Running   0          54s
+pod/product-85dc7c584f-z27t7            1/1     Running   0          54s
+
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx-deployment   1/1     1            1           98m
+deployment.apps/product            3/3     3            3           55s
+
+NAME                      TYPE           CLUSTER-IP       EXTERNAL-IP
+            PORT(S)        AGE
+service/kubernetes        ClusterIP      10.100.0.1       <none>
+            443/TCP        117m
+service/nginx-service     LoadBalancer   10.100.226.62    a5676081df3984f109abeba0d19fd221-1577562209.us-east-2.elb.amazonaws.com   80:32333/TCP   91m
+service/product-service   LoadBalancer   10.100.253.136   af91d19c25e2c4c518effe894cc79a66-1213065857.us-east-2.elb.amazonaws.com   80:30256/TCP   50s
+PS C:\Users\PC>
+
+>See logs
+Run Command:
+kubectl logs product-85dc7c584f-7c9mw
+
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://0.0.0.0:8080
+
+>
+Verify console
+	see pods
+
+>>
+Access the Service: 
+After deploying, it may take a few minutes for the AWS Load Balancer to be created and assigned an external IP address. 
+Once it is assigned, you can access your service by the external IP or DNS name:
+
+Run Command:
+kubectl get svc
+Look for the EXTERNAL-IP of your product-service and access it in a browser or via curl command.
+
+product-service   LoadBalancer   10.100.253.136   af91d19c25e2c4c518effe894cc79a66-xxxxxxx.us-east-2.elb.amazonaws.com   80:30256/TCP   2m35s
+
+---
+It is required Ingress With Cert-Manager
+	https://stackoverflow.com/questions/75248601/unable-to-reach-the-url-aws-provides-for-my-loadbalancer-service-in-eks
+	https://getbetterdevops.io/k8s-ingress-with-letsencrypt/
+---
+
+>>
+Check Access within the Cluster: 
+Try accessing the Product service within the cluster to ensure it's not an external networking issue. 
+You can do this by running a temporary pod inside the cluster and curling the service:
+
+Now, run a temporary pod with curl installed, and use it to send an HTTP request to the Nginx service. 
+Replace product-service with the name of your Product service if it's different:
+
+Run Command:
+  kubectl run -i --tty --rm debug --image=radial/busyboxplus:curl --restart=Never -- curl product-service/api/products
+
+PS C:\Users\PC> kubectl run -i --tty --rm debug --image=radial/busyboxplus:curl --restart=Never -- curl product-service/api/products
+If you don't see a command prompt, try pressing enter.
+Error attaching, falling back to logs: unable to upgrade connection: container debug not found in pod debug_default
+[{"id":1,"name":"Product A","price":12.99},{"id":2,"name":"Product B","price":23.99},{"id":3,"name":"Product C","price":34.99}]pod "debug" deleted
+
+
+This command runs a temporary pod with the radial/busyboxplus:curl image, which has curl installed, sends an HTTP request to the Nginx service, and then removes the pod once you exit.
+If everything is configured correctly, you should see Product json list as output in your terminal.
+
+>
+You can test HTTP POST,PUT and DELETE with Curl commands:
+
+GET
+http://localhost:5236/api/products
+
+af91d19c25e2c4c518effe894cc79a66-xxxxxxx.us-east-2.elb.amazonaws.com/api/products
+
+GET by id
+http://localhost:5236/api/products/2
+
+POST
+http://localhost:5236/api/products
+{
+    "id": 4,
+    "name": "Product D",
+    "price": 123.99
+}
+
+PUT by Id
+http://localhost:5236/api/products/3
+{
+    "id": 3,
+    "name": "Product CC",
+    "price": 123.99
+}
+
+GET
+http://localhost:5236/api/products

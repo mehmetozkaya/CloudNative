@@ -1,0 +1,52 @@
+Step 3. Deploy Nginx microservices on EKS Cluster w/ Fargate using eksctl
+----
+>>
+Create Nginx deployment yaml file
+Create a file named nginx-deployment.yaml and add the following content:
+
+nginx-deployment.yaml:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 250m
+            memory: 128Mi
+        ports:
+        - containerPort: 80
+
+
+>>
+Apply nginx-deployment.yaml into EKS Kubernetes cluster
+Run Command:
+kubectl apply -f nginx-deployment.yaml
+
+
+Verify
+kubectl get pod
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-5c68889b77-t8xvr   0/1     Pending   0          19s
+
+Verify-Console
+	goto pods
+
+See Node count = 2-> 3
+	when we deploy, this will auto scale by Fargate

@@ -1,0 +1,35 @@
+Expose Nginx Service on EKS Cluster w/ Fargate using eksctl
+----
+>>
+Create Nginx service yaml file or we can just run kubectl expose command.
+
+Expose the Nginx deployment:
+Run Command:
+kubectl expose deployment nginx-deployment --type=LoadBalancer --name=nginx-service
+
+
+Check the service to get the external IP:
+Run Command:
+kubectl get svc nginx-service
+
+Once the external IP is available, you can access the Nginx web server by navigating to http://<External-IP> in your browser.
+
+>
+Can't see Web Page
+
+If the external IP is available but you are not able to access the Nginx page, it's possible that there is a security group or networking configuration issue that is preventing access to the service.
+
+It is generally required Ingress With Cert-Manager
+	https://stackoverflow.com/questions/75248601/unable-to-reach-the-url-aws-provides-for-my-loadbalancer-service-in-eks
+	https://getbetterdevops.io/k8s-ingress-with-letsencrypt/
+
+>>
+Check Access within the Cluster: 
+Run a temporary pod with curl installed, and use it to send an HTTP request to the Nginx service. 
+
+Run Command:
+kubectl run -i --tty --rm debug --image=radial/busyboxplus:curl --restart=Never -- curl nginx-service
+
+This command runs a temporary pod with the radial/busyboxplus:curl image, which has curl installed, sends an HTTP request to the Nginx service, and then removes the pod once you exit.
+
+If everything is configured correctly, you should see the HTML content of the Nginx welcome page as output in your terminal.

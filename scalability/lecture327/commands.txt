@@ -1,0 +1,75 @@
+Step 2. Create an EKS Cluster with Fargate using eksctl
+----
+>>
+Basics of eksctl commands:
+eksctl version
+
+goto
+	https://eksctl.io/introduction/
+
+>>
+Create an EKS Cluster
+First, create an EKS cluster. 
+For this, you can use eksctl which is a simple CLI tool for creating clusters on EKS.
+
+Now, create an EKS cluster with Fargate:
+Run Command:
+eksctl create cluster --name my-eks-cluster --region us-east-2 --fargate
+
+This command creates an EKS cluster named my-eks-cluster in the us-east-2 region. 
+It might take some time for the cluster to be created. Thats why I stopped the video and come back once the cluster created.
+
+LOGS: -- WAIT UNTIL FINISHED THE INSTALLMENT LOGS
+2023-06-09 11:30:51 [ℹ]  building cluster stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:30:52 [ℹ]  deploying stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:31:22 [ℹ]  waiting for CloudFormation stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:31:53 [ℹ]  waiting for CloudFormation stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:32:55 [ℹ]  waiting for CloudFormation stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:33:56 [ℹ]  waiting for CloudFormation stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:34:58 [ℹ]  waiting for CloudFormation stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:35:59 [ℹ]  waiting for CloudFormation stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:37:00 [ℹ]  waiting for CloudFormation stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:38:01 [ℹ]  waiting for CloudFormation stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:39:02 [ℹ]  waiting for CloudFormation stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:40:03 [ℹ]  waiting for CloudFormation stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:41:04 [ℹ]  waiting for CloudFormation stack "eksctl-my-eks-cluster-cluster"
+2023-06-09 11:43:09 [ℹ]  creating Fargate profile "fp-default" on EKS cluster "my-eks-cluster"
+2023-06-09 11:45:20 [ℹ]  created Fargate profile "fp-default" on EKS cluster "my-eks-cluster"
+2023-06-09 11:45:51 [ℹ]  "coredns" is now schedulable onto Fargate
+2023-06-09 11:46:58 [ℹ]  "coredns" is now scheduled onto Fargate
+2023-06-09 11:46:58 [ℹ]  "coredns" pods are now scheduled onto Fargate
+2023-06-09 11:46:58 [ℹ]  waiting for the control plane to become ready
+2023-06-09 11:46:58 [✔]  saved kubeconfig as "C:\\Users\\PC\\.kube\\config"
+2023-06-09 11:46:58 [ℹ]  no tasks
+2023-06-09 11:46:58 [✔]  all EKS cluster resources for "my-eks-cluster" have been created
+2023-06-09 11:47:01 [ℹ]  kubectl command should work with "C:\\Users\\PC\\.kube\\config", try 'kubectl get nodes'
+2023-06-09 11:47:01 [✔]  EKS cluster "my-eks-cluster" in "us-east-2" region is ready
+PS C:\Users\PC>
+
+
+>>
+View Kubernetes resources on Console
+
+Check Console
+	goto console - eks
+		my-eks-cluster
+			Check Resources
+				Nodes
+				Pods
+				..
+
+>>
+View Kubernetes resources
+
+Check
+View your cluster nodes.
+	kubectl get nodes -o wide
+
+View the workloads running on your cluster.
+	kubectl get pods -A -o wide
+
+kubectl get svc
+kubectl get pod
+
+Show Node count = 2
+	after we deploy, this will auto scale by Fargate
