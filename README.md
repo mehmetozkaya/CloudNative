@@ -3,6 +3,7 @@ CloudNative Microservices, Container, Orchestators, Service Mesh, CI/CD, IaC, Gi
 We’re going to learn how to Design and Build Cloud-Native Apps with Microservices Architecture, Kubernetes Deployments, Communications, Backing Services, CI/CD pipelines and Monitoring Patterns and Best Practices.
 
 I have just published a new course — Cloud-Native: Microservices, Kubernetes, Service Mesh, CI/CD.
+
 https://www.udemy.com/course/cloud-native-microservices-kubernetes-service-mesh-cicd/?couponCode=LAUNCH
 
 Cloud-native is a huge topic that need to organize how to digest all topics well. We will follow Cloud-Native Trial Map that starts with Containerization and Orchestrations, and continues with CI/CD, Service Meshes, Scalability, Distributed Databases.. In every step, we will follow Cloud-native Pillars, with learning Cloud-Native architecture and visit Cloud-Native tools, explore and understand these tools, design architecture with these tools and finally develop +20 Hands-on real-world project on Kubernetes clusters.
