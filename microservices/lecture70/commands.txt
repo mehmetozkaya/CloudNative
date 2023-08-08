@@ -1,0 +1,34 @@
+Commands
+
+dotnet new web -n ProductService
+dotnet run
+
+Endpoints:
+
+GET
+http://localhost:5176/api/products
+
+GET by id
+http://localhost:5176/api/products/2
+
+POST
+http://localhost:5176/api/products
+{
+    "id": 4,
+    "name": "Product D",
+    "price": 123.99
+}
+
+PUT by Id
+http://localhost:5176/api/products/3
+{
+    "id": 3,
+    "name": "Product CC",
+    "price": 123.99
+}
+
+DELETE
+http://localhost:5176/api/products/3
+
+GET
+http://localhost:5176/api/products

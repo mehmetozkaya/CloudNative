@@ -1,0 +1,4 @@
+Commands
+
+dotnet new web -n ProductService
+dotnet run

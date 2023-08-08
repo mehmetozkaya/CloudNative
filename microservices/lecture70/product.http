@@ -1,0 +1,27 @@
+GET http://localhost:5176/api/products
+
+###
+
+GET http://localhost:5176/api/products/2
+
+###
+
+POST http://localhost:5176/api/products
+content-type: application/json
+
+{
+    "id": 4,
+    "name": "Product D",
+    "price": 123.99
+}
+
+###
+
+PUT http://localhost:5176/api/products/3
+content-type: application/json
+
+{
+    "id": 3,
+    "name": "Product CC",
+    "price": 123.99
+}
