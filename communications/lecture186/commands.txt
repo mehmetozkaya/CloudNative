@@ -1,0 +1,84 @@
+Open the Application to Outside Traffic
+----
+>1
+Create file bookinfo-gateway.yaml
+
+copy-paste
+	https://raw.githubusercontent.com/istio/istio/release-1.17/samples/bookinfo/networking/bookinfo-gateway.yaml
+
+>2
+Associate this application with the Istio gateway:
+
+Run Command:
+$ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+
+$ kubectl apply -f .\bookinfo-gateway.yaml
+
+gateway.networking.istio.io/bookinfo-gateway created
+virtualservice.networking.istio.io/bookinfo created
+
+>3
+Ensure that there are no issues with the configuration:
+
+$ istioctl analyze
+✔ No validation issues found when analyzing namespace: default.
+
+Warning [IST0103] (Pod default/hello-minikube-5b8bbb84c7-6grrn) The pod default/hello-minikube-5b8bbb84c7-6grrn is missing the Istio proxy.
+Info [IST0118] (Service default/hello-minikube) Port name  (port: 8080, targetPort: 8080) doesn't follow the naming convention of Istio port.
+
+
+>4
+Determining the ingress IP and ports
+
+Run this command in a new terminal window to start a Minikube tunnel that sends traffic to your Istio Ingress Gateway. 
+This will provide an external load balancer, EXTERNAL-IP, for service/istio-ingressgateway.
+
+Run Command:
+$ minikube tunnel
+
+>5
+Set the ingress host and ports:
+Set the INGRESS_HOST and INGRESS_PORT variables for accessing the gateway. Use the tabs to choose the instructions for your chosen platform:
+Open git bash command and check below parameters:
+
+$ export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+$ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+$ export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
+
+Ensure an IP address and ports were successfully assigned to each environment variable:
+
+$ echo "$INGRESS_HOST"
+127.0.0.1
+
+$ echo "$INGRESS_PORT"
+80
+
+$ echo "$SECURE_INGRESS_PORT"
+443
+
+
+>6
+Set GATEWAY_URL:
+
+$ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+
+Ensure an IP address and port were successfully assigned to the environment variable:
+
+$ echo "$GATEWAY_URL"
+192.168.99.100:32194
+
+127.0.0.1:80
+
+>7
+Verify external access
+Confirm that the Bookinfo application is accessible from outside.
+Run the following command to retrieve the external address of the Bookinfo application.
+
+$ echo "http://$GATEWAY_URL/productpage"
+
+Paste the output from the previous command into your web browser.
+open chrome
+	http://127.0.0.1/productpage
+
+See page came
+	The Comedy of Errors !

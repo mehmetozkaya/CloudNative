@@ -1,0 +1,78 @@
+Uninstall Istio Workloads
+----
+When you’re finished the Bookinfo sample, uninstall and clean it up using the following command:
+
+Run Command:
+$ samples/bookinfo/platform/kube/cleanup.sh
+
+See details
+copy paste from here
+	https://raw.githubusercontent.com/istio/istio/release-1.17/samples/bookinfo/platform/kube/cleanup.sh
+
+create file into lecture folder
+	cleanup.sh
+
+>>
+Run bash command
+
+open bash
+
+goto folder
+	cd lecture
+
+run command
+	bash cleanup.sh
+
+namespace = default
+
+WAIT UNTIL cleanup message came
+	using NAMESPACE=default
+	virtualservice.networking.istio.io "bookinfo" deleted
+	gateway.networking.istio.io "bookinfo-gateway" deleted
+	Application cleanup may take up to one minute
+	service "details" deleted
+	serviceaccount "bookinfo-details" deleted
+	deployment.apps "details-v1" deleted
+	service "ratings" deleted
+	serviceaccount "bookinfo-ratings" deleted
+	deployment.apps "ratings-v1" deleted
+	service "reviews" deleted
+	serviceaccount "bookinfo-reviews" deleted
+	deployment.apps "reviews-v1" deleted
+	deployment.apps "reviews-v2" deleted
+	deployment.apps "reviews-v3" deleted
+	service "productpage" deleted
+	serviceaccount "bookinfo-productpage" deleted
+	deployment.apps "productpage-v1" deleted
+	Application cleanup successful
+
+>>
+The Istio uninstall deletes the RBAC permissions and all resources hierarchically under the istio-system namespace. 
+It is safe to ignore errors for non-existent resources because they may have been deleted hierarchically.
+
+delete addons - powershell
+
+Run Command:
+	kubectl delete -f .\addons\
+	istioctl uninstall -y --purge
+
+>>
+The istio-system namespace is not removed by default. 
+If no longer needed, use the following command to remove it:
+
+Run Command:
+$ kubectl delete namespace istio-system
+
+namespace "istio-system" deleted
+
+>>
+The label to instruct Istio to automatically inject Envoy sidecar proxies is not removed by default. 
+If no longer needed, use the following command to remove it:
+
+Run Command:
+$ kubectl label namespace default istio-injection-
+
+namespace/default labeled
+
+>>
+Finished !!

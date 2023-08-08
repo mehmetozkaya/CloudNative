@@ -1,0 +1,79 @@
+Deploy the Microservices Application
+----
+>1
+Deploy the Bookinfo sample application:
+
+Run Command:
+	kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+
+	kubectl apply -f .\bookinfo.yaml
+
+service/details created
+serviceaccount/bookinfo-details created
+deployment.apps/details-v1 created
+service/ratings created
+serviceaccount/bookinfo-ratings created
+deployment.apps/ratings-v1 created
+service/reviews created
+serviceaccount/bookinfo-reviews created
+deployment.apps/reviews-v1 created
+deployment.apps/reviews-v2 created
+deployment.apps/reviews-v3 created
+service/productpage created
+serviceaccount/bookinfo-productpage created
+deployment.apps/productpage-v1 created
+
+
+>2
+The application will start. 
+As each pod becomes ready, the Istio sidecar will be deployed along with it.
+
+Run Command:
+	kubectl get services
+
+NAME          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+details       ClusterIP   10.0.0.212      <none>        9080/TCP   29s
+kubernetes    ClusterIP   10.0.0.1        <none>        443/TCP    25m
+productpage   ClusterIP   10.0.0.57       <none>        9080/TCP   28s
+ratings       ClusterIP   10.0.0.33       <none>        9080/TCP   29s
+reviews       ClusterIP   10.0.0.28       <none>        9080/TCP   29s
+
+and
+
+Run Command:
+	kubectl get pods
+
+NAME                              READY   STATUS    RESTARTS   AGE
+details-v1-558b8b4b76-2llld       2/2     Running   0          2m41s
+productpage-v1-6987489c74-lpkgl   2/2     Running   0          2m40s
+ratings-v1-7dc98c7588-vzftc       2/2     Running   0          2m41s
+reviews-v1-7f99cc4496-gdxfn       2/2     Running   0          2m41s
+reviews-v2-7d79d5bd5d-8zzqd       2/2     Running   0          2m41s
+reviews-v3-7dbcdcbc56-m8dph       2/2     Running   0          2m41s
+reviews-v2-5d99885bc9-thx8b       0/2     PodInitializing   0             2m18s
+reviews-v3-589cb4d56c-9xrfs       0/2     PodInitializing   0             2m18s
+
+Re-run the previous command and wait until all pods report READY and STATUS Running before you go to the next step. This might take a few minutes depending on your platform.
+
+Make sure that 2/2 pods created successfully.
+
+Run Command:
+PS C:\Users\PC> kubectl get pods
+NAME                              READY   STATUS    RESTARTS      AGE
+details-v1-6997d94bb9-4g69r       2/2     Running   0             3m1s
+hello-minikube-5b8bbb84c7-6grrn   1/1     Running   2 (10m ago)   2d20h
+productpage-v1-d4f8dfd97-f85s2    2/2     Running   0             3m
+ratings-v1-b8f8fcf49-dhkz8        2/2     Running   0             3m
+reviews-v1-5896f547f5-l52p9       2/2     Running   0             3m
+reviews-v2-5d99885bc9-thx8b       2/2     Running   0             3m
+reviews-v3-589cb4d56c-9xrfs       2/2     Running   0             3m
+
+>3
+Verify everything is working correctly up to this point. 
+Run this command to see if the app is running inside the cluster and serving HTML pages by checking for the page title in the response:
+
+bash script
+
+$ kubectl exec "$(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metadata.name}')" -c ratings -- curl -sS productpage:9080/productpage | grep -o "<title>.*</title>"
+
+<title>Simple Bookstore App</title>

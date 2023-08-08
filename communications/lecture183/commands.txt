@@ -1,0 +1,42 @@
+Download and Install Istio Service Mesh onto Minikube K8s cluster
+----
+>1
+Go to the Istio release page to download the installation file for your OS, 
+	or download and extract the latest release automatically (Linux or macOS):
+
+	https://istio.io/latest/docs/setup/getting-started/#download
+	https://github.com/istio/istio/releases	
+
+	istio-1.xx-win.zip	
+
+>2
+Move to the Istio package directory. 
+For example, if the package is istio-1.17.2:
+
+$ cd istio-1.17.2
+
+The installation directory contains:
+
+Sample applications in samples/
+The istioctl client binary in the bin/ directory.
+
+C:\Users\PC\Downloads\istio-1.17.2-win\istio-1.17.2
+
+>3
+Add the istioctl client to your path (Linux or macOS):
+
+$ export PATH=$PWD/bin:$PATH
+
+Windows
+
+Move 
+	C:\Users\PC\Downloads\istioctl-1.17.2-win
+		istioctl.exe
+
+to our
+	C:/tools folder
+		istioctl.exe
+
+>
+Open wt
+	istioctl

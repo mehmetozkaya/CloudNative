@@ -1,0 +1,60 @@
+View the dashboard - Deploy the Kiali dashboard, along with Prometheus, Grafana, and Jaeger
+----
+>1
+We should download full folder on github, we can also do copy paste one-by-one all folders, but there is a short way to implement all folder.
+
+Downloaded path:
+	https://github.com/istio/istio/tree/release-1.17/samples/addons
+
+Download folder:
+	https://download-directory.github.io/
+
+Downloaded !
+
+give path and download zip file.
+Extract files
+
+>2
+create "addons" folder under lecture folder  on vscode
+
+copy paste all items into github to vs code folder
+	https://github.com/istio/istio/tree/release-1.17/samples/addons
+
+	kiali.yaml
+	prometheus.yaml
+	jaeger.yaml
+	grafana.yaml
+
+> Read
+	Readme File
+
+>
+goto path
+	copy and paste addons folder of k8s
+
+>
+Examine files
+	kiali.yaml
+	prometheus.yaml
+	jaeger.yaml
+	grafana.yaml
+
+So now we are ready to apply this whole folder into our minikube kubernetes cluster over the istio service mesh.
+
+>>
+Install Kiali and the other addons and wait for them to be deployed.
+
+Run Command:
+$ kubectl apply -f .\addons\
+$ kubectl rollout status deployment/kiali -n istio-system
+
+Waiting for deployment "kiali" rollout to finish: 0 of 1 updated replicas are available...
+deployment "kiali" successfully rolled out
+
+>
+Access the Kiali dashboard.
+
+Run Command:
+$ istioctl dashboard kiali
+
+

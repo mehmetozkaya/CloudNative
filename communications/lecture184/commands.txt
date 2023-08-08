@@ -1,0 +1,30 @@
+Install Istio Service Mesh
+----
+>0
+Make sure that you have installed minikube and kubectl.
+
+Start Docker
+minikube start
+
+kubectl get pod
+kubectl get all
+
+>1
+For this installation, we use the demo configuration profile. 
+
+Run Command:
+	istioctl install --set profile=demo -y
+
+✔ Istio core installed
+✔ Istiod installed
+✔ Egress gateways installed
+✔ Ingress gateways installed
+✔ Installation complete
+
+>2
+Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:
+
+Run Command:
+	kubectl label namespace default istio-injection=enabled
+
+namespace/default labeled
