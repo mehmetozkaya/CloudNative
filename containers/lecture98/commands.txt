@@ -1,0 +1,40 @@
+Run Docker Image for Product Microservices
+---
+See a list of all images available on your machine
+	docker images
+---
+Run Docker image:
+docker run -d -p 8080:80 --name productservicecontainer productservice
+
+---
+Check if the container is running by executing:
+docker ps
+
+---
+Open your browser and navigate to
+http://localhost:8080
+
+http://localhost:8080/api/products
+[{"id":1,"name":"Product A","price":12.99},{"id":2,"name":"Product B","price":23.99},{"id":3,"name":"Product C","price":34.99}]
+
+---
+Stop Running Container:
+docker stop productservicecontainer
+docker rm productservicecontainer
+docker ps
+
+---
+Another good approach to run docker image:
+docker run -it --rm -p 8080:80 --name productservicecontainer productservice
+
+This command tells Docker to run a container in -it interactive mode - we used also run detached mode (-d).
+
+Hit Endpoint:
+http://localhost:8080/api/products
+[{"id":1,"name":"Product A","price":12.99},{"id":2,"name":"Product B","price":23.99},{"id":3,"name":"Product C","price":34.99}]
+
+goto command prompt:
+CTRL+C
+
+Check running images on docker:
+docker ps

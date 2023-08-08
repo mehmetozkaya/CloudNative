@@ -1,0 +1,108 @@
+Hands-on: Containerize .Net Microservices with Docker - TODO List
+
+Write Dockerfile
+Build Docker Image
+Run Docker Container
+Test running docker container on local docker env
+Tag Docker Image
+Publish image to a Registry: Docker Hub
+Deploy to Cloud: AWS, Azure
+
+-----
+Build Docker Image
+
+Run command at same directory level of Dockerfile:
+    docker build -t productservice .
+
+See available images:
+    docker images
+
+-----
+Build Docker Image
+
+Run command at same directory level of Dockerfile:
+    docker build -t productservice .
+
+See available images:
+    docker images
+
+-----
+Run Docker Container
+You can run your app in a container using the following command:
+
+    docker run -d -p 8080:80 --name productservicecontainer productservice
+
+Check if the container is running by executing:
+    docker ps
+
+Hit Endpoint:
+http://localhost:8080/api/products
+[{"id":1,"name":"Product A","price":12.99},{"id":2,"name":"Product B","price":23.99},{"id":3,"name":"Product C","price":34.99}]
+
+Stop Running Container:
+    docker stop productservicecontainer
+    docker rm productservicecontainer
+
+Another good approach to run docker image:
+    docker run -it --rm -p 8080:80 --name productservicecontainer productservice
+
+This command tells Docker to run a container in -it interactive mode - we used also run detached mode (-d).
+
+Hit Endpoint:
+http://localhost:8080/api/products
+[{"id":1,"name":"Product A","price":12.99},{"id":2,"name":"Product B","price":23.99},{"id":3,"name":"Product C","price":34.99}]
+
+goto command prompt:
+    CTRL+C
+
+Check running images on docker:
+    docker ps
+
+-----
+Publish image to a Registry: Docker Hub
+
+Docker Hub is a central place to upload Docker images. 
+Many products, including Microsoft Azure, can create containers based on images in Docker Hub.
+
+Create a Docker Hub account if you don't have one: 
+	https://hub.docker.com/    
+
+>
+Step 1: Log in to Docker Hub
+Open a terminal or command prompt and run the following command to log in to Docker Hub:
+
+	docker login
+
+Enter your Docker Hub username and password when prompted.
+
+Username: mehmetozkaya
+Password: 
+Login Succeeded
+
+>
+Step 2: Tag your Docker image
+
+Find the IMAGE ID of your local Docker image by running:
+	docker images
+
+Tag your Docker image with your Docker Hub username and the desired repository name:
+	docker tag productservice mehmetozkaya/productservice:latest
+
+see tagged image
+	docker images
+
+>
+Step 3: Push the Docker image to Docker Hub
+Push the tagged Docker image to your Docker Hub repository:
+	docker push mehmetozkaya/productservice:latest
+
+Check
+	https://hub.docker.com/
+See
+	https://hub.docker.com/repository/docker/mehmetozkaya/productservice/general
+
+-----
+Deploy to Cloud: AWS, Azure
+
+We have only 1 application or 1 microservices that need to deploy on cloud.
+Google Cloud Run, AWS App Runner, and Azure Container Instances.

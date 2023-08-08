@@ -1,0 +1,40 @@
+Push Docker Image to Docker Hub for Product Microservices
+---
+Docker Hub is a central place to upload Docker images. 
+>
+Create a Docker Hub account if you don't have one: 
+	https://hub.docker.com/    
+
+>
+Step 1: Log in to Docker Hub
+Open a terminal and run the following command to log in to Docker Hub:
+
+	docker login
+
+Enter your Docker Hub username and password when prompted.
+
+Username: mehmetozkaya
+Password: 
+Login Succeeded
+
+>
+Step 2: Tag your Docker image
+
+Find the IMAGE ID of your local Docker image by running:
+	docker images
+
+Tag your Docker image with your Docker Hub username and the desired repository name:
+	docker tag productservice mehmetozkaya/productservice:latest
+
+See tagged image
+	docker images
+
+>
+Step 3: Push the Docker image to Docker Hub
+Push the tagged Docker image to your Docker Hub repository:
+	docker push mehmetozkaya/productservice:latest
+
+Check
+	https://hub.docker.com/
+See
+	https://hub.docker.com/repository/docker/mehmetozkaya/productservice/general

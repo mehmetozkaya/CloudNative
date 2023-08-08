@@ -1,0 +1,10 @@
+Create Docker Image for Product Microservices
+
+Build Docker Image
+
+Run command at same directory level of Dockerfile
+	docker build -t productservice .
+
+---
+See a list of all images available on your machine
+	docker images
