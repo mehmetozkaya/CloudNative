@@ -1,0 +1,26 @@
+Step 2. Clone Repository and  and push Product microservices codes with Dockerfile
+----
+>>
+goto vs code
+	goto section devops_cicd
+	goto lecture 384
+
+>>
+Open with vs
+Clone from github
+Open project
+
+>>
+Copy ProductService project from lecture folder
+
+>
+See project 
+
+>
+See Dockerfile
+
+>
+Push codes to GitHub
+
+>
+See github

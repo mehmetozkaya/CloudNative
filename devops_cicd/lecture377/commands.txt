@@ -1,0 +1,35 @@
+Step 4. Terraform Plan: Validate the resource declaration, Format and validate the configuration
+----
+>>
+goto vs code
+	goto section devops_cicd
+	goto lecture 377 / terraform-ec2
+
+>
+Planning - terraform plan:
+This command allows you to see what Terraform will do before actually making any changes.
+It's a dry run that reveals which actions Terraform will take to achieve the desired state defined in your configuration.
+It can be used to prevent surprises and avoid mistakes.
+
+terraform plan
+
+Since this is the first time we are going to run the code – there are no changes or deletions highlighted. 
+
+>>
+
+>>
+Also we can format and validate resources before applying:
+
+Format your configuration. 
+Terraform will print out the names of the files it modified, if any.
+
+Run Command:
+terraform fmt
+
+>>
+Validate your configuration.
+
+Run Command:
+terraform validate
+
+Success! The configuration is valid.

@@ -1,0 +1,21 @@
+AWS Fargate Auto-scale Deploy Product microservices on EKS Cluster
+----
+
+>>
+RunCommand:
+kubectl scale deployment product --replicas=6
+
+See: console and here:
+kubectl get nodes
+
+
+kubectl delete -f .\product-deploy.yaml
+
+See nodes count
+PS C:\Users\PC> kubectl get nodes
+NAME                                                    STATUS   ROLES    AGE    VERSION
+fargate-ip-192-168-126-127.us-east-2.compute.internal   Ready    <none>   139m   v1.25.8-eks-f4dc2c0
+fargate-ip-192-168-157-94.us-east-2.compute.internal    Ready    <none>   149m   v1.25.8-eks-f4dc2c0
+fargate-ip-192-168-172-214.us-east-2.compute.internal   Ready    <none>   149m   v1.25.8-eks-f4dc2c0
+
+This auto-scale nodes manages by Serverless Fargate that we don't need to manage scalability.

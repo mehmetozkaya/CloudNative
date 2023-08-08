@@ -1,0 +1,44 @@
+Step 4. Create and Define a GitHub Actions Workflow File
+----
+>>
+Create a GitHub Actions Workflow File: 
+In the workflows directory, create a file named docker-image.yml.
+
+>>
+Define Workflow: 
+Edit docker-image.yml and define the workflow:
+
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_TOKEN }}
+    
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: mehmetozkaya/productservice:latest
+        
+>>
+This file defines a simple workflow that gets triggered on a push to the main branch. 
+It checks out your code, logs into Docker Hub, builds the Docker image and pushes it to Docker Hub.
+
+>>
+That we can check to dockerhub repository in here:
+	https://hub.docker.com/r/mehmetozkaya/productservice

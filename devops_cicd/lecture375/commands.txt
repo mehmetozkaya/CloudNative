@@ -1,0 +1,48 @@
+Step 2. Terraform Develop IaC: Write configuration the Desired State
+----
+>>
+goto vs code
+	create section devops_cicd
+	create lecture 375,376
+
+>
+Each Terraform configuration must be in its own working directory. Create a directory for your configuration.
+
+mkdir terraform-ec2
+
+Change into the directory.
+cd terraform-ec2
+
+>
+Create main.tf file to define your infrastructure.
+touch main.tf
+
+>
+Open main.tf in your text editor, paste in the configuration below, and save the file.
+
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.16"
+    }
+  }
+
+  required_version = ">= 1.2.0"
+}
+
+provider "aws" {
+  region  = "us-west-2"
+}
+
+resource "aws_instance" "app_server" {
+  ami           = "ami-830c94e3"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "terraform-example"
+  }
+}
+
+
+This configuration tells Terraform to create an EC2 instance in the AWS region us-west-2 using the Amazon Linux 2 AMI.

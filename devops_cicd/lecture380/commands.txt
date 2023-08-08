@@ -1,0 +1,43 @@
+Step 7. Terraform Variables: Parameterizing the Configuration with Input Variables
+----
+>>
+goto vs code
+	goto section devops_cicd
+	goto lecture 380 / terraform-ec2
+
+>
+Terraform Variables:
+
+Set the instance name with a variable
+The current configuration includes a number of hard-coded values. Terraform variables allow you to write configuration that is flexible and easier to re-use.
+
+Add a variable to define the instance name.
+
+Create a new file called "variables.tf" with a block defining a new instance_name variable.
+
+variable "instance_name" {
+  description = "Value of the Name tag for the EC2 instance"
+  type        = string
+  default     = "ExampleAppServerInstance"
+}
+
+>>
+In main.tf, update the aws_instance resource block to use the new variable. 
+The instance_name variable block will default to its default value ("ExampleAppServerInstance") unless you declare a different value.
+
+ resource "aws_instance" "app_server" {
+   ami           = "ami-08d70e59c07c61a3a"
+   instance_type = "t2.micro"
+
+   tags = {
+-    Name = "ExampleAppServerInstance"
++    Name = var.instance_name
+   }
+ }
+
+>>
+Apply your configuration
+Apply the configuration. Respond to the confirmation prompt with a yes.
+
+terraform apply
+

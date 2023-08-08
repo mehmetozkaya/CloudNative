@@ -1,0 +1,19 @@
+Step 3. Create GitHub Secrets for DockerHub Username and Token
+----
+>>
+goto vs code
+	goto section devops_cicd
+	goto lecture 385
+
+>>
+Create GitHub Secrets: 
+Go to your GitHub repository and navigate to "Settings" > "Secrets". 
+
+Create two Repository secrets:
+
+DOCKER_HUB_USERNAME: Your Docker Hub username. 
+DOCKER_HUB_TOKEN: Your Docker Hub access token.
+
+DockerHub:
+https://hub.docker.com/u/mehmetozkaya
+Mehmetozkaya

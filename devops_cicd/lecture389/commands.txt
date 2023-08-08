@@ -1,0 +1,17 @@
+Step 6. Change code and commit push to monitor new GitHub Actions workflow
+----
+>>
+get latest code from github actions worflow
+
+>
+change code in product:
+
+add new product in seed function
+
+new Product { Id = 4, Name = "Product D", Price = 54.99m },
+
+>
+commit and push
+
+see how new workflow started
+see dockerhub

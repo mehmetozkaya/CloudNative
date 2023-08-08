@@ -1,0 +1,21 @@
+Step 8. Terraform Destroy: Destroy Infrastructure
+----
+>>
+goto vs code
+	goto section devops_cicd
+	goto lecture 381 / terraform-ec2
+
+>
+Terraform Variables:
+
+Destroy
+The terraform destroy command terminates resources managed by your Terraform project.
+To delete the EC2 instance created using apply, run terraform destroy to terminate the same instance as below.
+
+terraform destroy
+
+Here, it again asks for our confirmation with an output
+Enter a value: yes
+
+>
+Check AWS Console
