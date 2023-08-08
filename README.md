@@ -11,23 +11,39 @@ Cloud-native is a huge topic that need to organize how to digest all topics well
 During the course, we’ll have a series of hands-on labs for each Cloud-Native Pillar to reinforce your understanding and provide practical experience.
 
 Hands-on: Develop a RESTful Microservices with CRUD
+
 Hands-on: Containerize .Net Microservices with Docker
+
 Hands-on: Deploy Microservices to Kubernetes
+
 Hands-on: Deploy Microservices to Kubernetes with Helm Charts
+
 Hands-on: Deploy Microservices to Kubernetes with Service Mesh Istio and Envoy
+
 Hands-on: Deploy CockroachDB in a Single Kubernetes Cluster with Minikube
+
 Hands-on: Deploy Cloud-Native Redis Cache on a Kubernetes Cluster with Minikube
+
 Hands-on: Deploy Cloud-Native Kafka Message Brokers on a Kubernetes Cluster with Minikube
+
 Hands-on: Auto-scaling Kubernetes Pods (VPA,HPA,KEDA) with Minikube
+
 Hands-on: Deploy Microservices on Amazon EKS Fargate
+
 Hands-on: Terraform IaC provision AWS EC2 instance
+
 Hands-on: GitHub Actions CI/CD for Build & Push Docker Images to DockerHub
+
 Hands-on: Kubernetes Monitoring with Prometheus and Grafana
+
 Also we will see AWS Serverless Labs to show how cloud-native architectures works on fully cloud serverless services, especially for AWS services:
 
 Hands-on: Deploy ProductService Container to AWS Apprunner
+
 Hands-on: Building RESTful Microservices with AWS Lambda, API Gateway and DynamoDB
+
 Hands-on: Amazon SNS Notifications Topic Subscribe From AWS Lambda
+
 These hands-on labs will provide you with practical experience in applying the concepts, tools, and best practices you’ve learned throughout the course.
 
 ## Cloud-Native Pillars Map — The Course Map
