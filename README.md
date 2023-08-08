@@ -33,7 +33,6 @@ These hands-on labs will provide you with practical experience in applying the c
 ## Cloud-Native Pillars Map — The Course Map
 Here you can find our course map about the “Cloud-Native Pillars”:
 
-
 Microservices
 Containers
 Orchestrators
@@ -88,6 +87,3 @@ Explore and Practice with cloud-native tools, understand when and where to use t
 Prepare for Software Architecture Interviews
 Prepare for System Design Architecture Interview exams.
 By the end of this course, you will gain real-world experience, you will have a solid understanding of the cloud-native ecosystem and will be ready to design, build, and deploy your own cloud-native applications using microservices, Kubernetes, service meshes, CI/CD pipelines, and more.
-
-USE BELOW LINK :
-https://www.udemy.com/course/cloud-native-microservices-kubernetes-service-mesh-cicd/?couponCode=LAUNCH
