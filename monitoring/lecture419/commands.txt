@@ -1,0 +1,36 @@
+Step 4. Setup and Install Grafana
+----
+>
+Add Helm Repositories:
+To get the latest Helm charts for Prometheus and Grafana, you need to add their repositories.
+
+>
+goto Grafana ArtifactHub Helm Repository:
+https://artifacthub.io/packages/helm/grafana/grafana
+
+>
+Examine the helm repository on ArtifactHub
+Install commands, values yamls..
+
+>
+Add the Grafana Helm repo
+helm repo add grafana https://grafana.github.io/helm-charts
+
+Update Helm repos to fetch the latest charts
+helm repo update
+
+>
+Check helm repos
+helm repo list
+
+>
+Install Grafana:
+Deploy Grafana into the monitoring namespace.
+
+helm install grafana grafana/grafana --namespace monitoring
+
+Wait for a couple of minutes to let Prometheus components deploy and start.
+
+>
+Check Kubernetes
+kubectl get all -n monitoring

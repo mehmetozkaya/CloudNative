@@ -1,0 +1,25 @@
+Step 6. Add Grafana Datasource for Prometheus Server
+----
+>
+Connect Grafana to Prometheus:
+After logging into Grafana, 
+  click on the gear icon ⚙️ on the left side to navigate to the Configuration menu.
+
+Click on Data Sources.
+
+Click Add data source and choose Prometheus.
+
+In the HTTP section, 
+ set the URL:
+    http://prometheus-server.monitoring.svc.cluster.local.
+ or you can give minikube address of Prometheus
+    http://127.0.0.1:60663/
+
+Click Save & Test.
+
+>
+Examine Grafana
+
+goto Connections
+    Data Sources
+        see Prometheus

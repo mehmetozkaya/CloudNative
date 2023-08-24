@@ -1,0 +1,34 @@
+Step 5. Access Grafana Dashboard
+----
+>
+See K8s Services:
+kubectl get svc -n monitoring
+
+NAME                                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+grafana                               ClusterIP   10.106.219.248   <none>        80/TCP     10m
+prometheus-alertmanager               ClusterIP   10.101.254.6     <none>        9093/TCP   11m
+prometheus-alertmanager-headless      ClusterIP   None             <none>        9093/TCP   11m
+prometheus-kube-state-metrics         ClusterIP   10.97.118.91     <none>        8080/TCP   11m
+prometheus-prometheus-node-exporter   ClusterIP   10.103.244.211   <none>        9100/TCP   11m
+prometheus-prometheus-pushgateway     ClusterIP   10.110.232.46    <none>        9091/TCP   11m
+prometheus-server                     ClusterIP   10.99.166.109    <none>        80/TCP     11m
+
+>
+Access Grafana Dashboard:
+You can use minikube to easily open the Grafana dashboard.
+Expose port-forward to grafana
+
+minikube service grafana -n monitoring
+
+This will open Grafana in your default web browser. 
+Use the credentials obtained in the next step to log in.
+
+>
+To retrieve your Grafana login credentials:
+Open Bash Command window:
+
+echo "User: admin"
+echo "Password: $(kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode)"
+
+>
+Examine Grafana Dashboard

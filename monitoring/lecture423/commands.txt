@@ -1,0 +1,29 @@
+Step 8. Cleanup Resources (helm, kubectl, minikube)
+----
+>
+Uninstall Prometheus and Grafana:
+
+helm uninstall prometheus -n monitoring
+helm uninstall grafana -n monitoring
+
+>
+Verify helm repos:
+
+helm list
+helm repo list
+
+>
+Delete the monitoring namespace:
+
+kubectl delete namespace monitoring
+
+>
+Check K8s
+
+kubectl get all
+kubectl get all -n monitoring
+
+>
+Stop minikube:
+
+minikube stop

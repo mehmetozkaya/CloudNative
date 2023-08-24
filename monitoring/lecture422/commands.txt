@@ -1,0 +1,27 @@
+Step 7. Create Kubernetes Cluster Dashboard on Grafana
+----
+>
+Import Kubernetes Monitoring Dashboards:
+Go to the Grafana dashboards page 
+https://grafana.com/grafana/dashboards/
+
+>
+Find a Kubernetes monitoring dashboard (e.g., "Kubernetes All Nodes"). 
+Copy ID to clipboard. Note the dashboard ID. 
+Back in Grafana, click on the + sign on the left, choose Import, enter the dashboard ID, and follow the prompts.
+
+Kubernetes Cluster (Prometheus)
+https://grafana.com/grafana/dashboards/6417-kubernetes-cluster-prometheus/
+
+Summary metrics about containers running on Kubernetes nodes. 
+
+Another Option:
+Search for: Kubernetes cluster
+Kubernetes cluster monitoring (via Prometheus)
+https://grafana.com/grafana/dashboards/315-kubernetes-cluster-monitoring-via-prometheus/
+>
+Observe Metrics:
+Navigate around the imported dashboard. 
+You should see metrics related to your Minikube node, pods, deployments, and other Kubernetes components.
+
+Monitors Kubernetes cluster using Prometheus. Shows overall cluster CPU / Memory / Filesystem usage as well as individual pod, containers, systemd services statistics. 
