@@ -1,0 +1,51 @@
+Step 3. Access Prometheus Dashboard
+----
+>
+See K8s Services:
+kubectl get svc -n monitoring
+
+NAME                                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+prometheus-alertmanager               ClusterIP   10.101.254.6     <none>        9093/TCP   11m
+prometheus-alertmanager-headless      ClusterIP   None             <none>        9093/TCP   11m
+prometheus-kube-state-metrics         ClusterIP   10.97.118.91     <none>        8080/TCP   11m
+prometheus-prometheus-node-exporter   ClusterIP   10.103.244.211   <none>        9100/TCP   11m
+prometheus-prometheus-pushgateway     ClusterIP   10.110.232.46    <none>        9091/TCP   11m
+prometheus-server                     ClusterIP   10.99.166.109    <none>        80/TCP     11m
+
+>
+Expose port-forward to prometheus-server
+
+minikube service prometheus-server -n monitoring
+
+>
+Examine Prometheus Dashboard
+Graph
+Alerts
+Configuration
+Rules
+Targets
+Service Discovery
+
+goto Graph
+	search for "node"..
+		node_cpu_seconds_total
+		node_disk_discard_time_seconds_total
+        
+>
+Prometheus metrics
+http://127.0.0.1:60663/metrics
+
+See different type of metrics: gauge, counter..
+
+# HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
+# TYPE go_memstats_alloc_bytes gauge
+go_memstats_alloc_bytes 8.98326e+07
+# HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
+# TYPE go_memstats_alloc_bytes_total counter
+go_memstats_alloc_bytes_total 7.12498864e+08
+# HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.
+# TYPE go_memstats_buck_hash_sys_bytes gauge
+go_memstats_buck_hash_sys_bytes 1.542932e+06
+# HELP go_memstats_frees_total Total number of frees.
+# TYPE go_memstats_frees_total counter
+go_memstats_frees_total 1.390623e+06

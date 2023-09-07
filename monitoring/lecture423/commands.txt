@@ -1,29 +1,27 @@
-Step 8. Cleanup Resources (helm, kubectl, minikube)
+Step 7. Create Kubernetes Cluster Dashboard on Grafana
 ----
 >
-Uninstall Prometheus and Grafana:
-
-helm uninstall prometheus -n monitoring
-helm uninstall grafana -n monitoring
-
->
-Verify helm repos:
-
-helm list
-helm repo list
+Import Kubernetes Monitoring Dashboards:
+Go to the Grafana dashboards page 
+https://grafana.com/grafana/dashboards/
 
 >
-Delete the monitoring namespace:
+Find a Kubernetes monitoring dashboard (e.g., "Kubernetes Cluster"). 
+Copy ID to clipboard. Note the dashboard ID. 
+Back in Grafana, click on the + sign on the left, choose Import, enter the dashboard ID, and follow the prompts.
 
-kubectl delete namespace monitoring
+Kubernetes Cluster (Prometheus)
+https://grafana.com/grafana/dashboards/6417-kubernetes-cluster-prometheus/
 
+Summary metrics about containers running on Kubernetes nodes. 
+
+Another Option:
+Search for: Kubernetes cluster
+Kubernetes cluster monitoring (via Prometheus)
+https://grafana.com/grafana/dashboards/315-kubernetes-cluster-monitoring-via-prometheus/
 >
-Check K8s
+Observe Metrics:
+Navigate around the imported dashboard. 
+You should see metrics related to your Minikube node, pods, deployments, and other Kubernetes components.
 
-kubectl get all
-kubectl get all -n monitoring
-
->
-Stop minikube:
-
-minikube stop
+Monitors Kubernetes cluster using Prometheus. Shows overall cluster CPU / Memory / Filesystem usage as well as individual pod, containers, systemd services statistics. 

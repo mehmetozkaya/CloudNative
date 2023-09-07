@@ -1,42 +1,26 @@
-Step 2. Setup and Install Prometheus
+Step 1. Prepare environment (Start Docker Desktop, minikube k8s cluster and helm)
 ----
->
-Add Helm Repositories:
-To get the latest Helm charts for Prometheus and Grafana, you need to add their repositories.
+Prerequisites:
+minikube installed. 
+kubectl command-line tool.
+Helm v3 installed.
 
->
-goto Prometheus ArtifactHub Helm Repository:
-https://artifacthub.io/packages/helm/prometheus-community/prometheus
+>1
+Start Docker Desktop
 
->
-Examine the helm repository on ArtifactHub
-Install commands, values yamls..
+>2
+Start minikube
 
->
-Add the Prometheus Helm repo
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+minikube start
 
-Update Helm repos to fetch the latest charts
-helm repo update
+>3
+Check K8s
 
->
-Check helm repos
+kubectl get all
+
+>4
+Check helm
+
+helm
+helm list
 helm repo list
-
->
-Create Monitoring Namespace:
-This namespace will hold all our monitoring components.
-
-kubectl create namespace monitoring
-
->
-Install Prometheus:
-Deploy Prometheus into the monitoring namespace.
-
-helm install prometheus prometheus-community/prometheus --namespace monitoring
-
-Wait for a couple of minutes to let Prometheus components deploy and start.
-
->
-Check Kubernetes
-kubectl get all -n monitoring

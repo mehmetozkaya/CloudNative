@@ -1,34 +1,36 @@
-Step 5. Access Grafana Dashboard
+Step 4. Setup and Install Grafana
 ----
 >
-See K8s Services:
-kubectl get svc -n monitoring
-
-NAME                                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
-grafana                               ClusterIP   10.106.219.248   <none>        80/TCP     10m
-prometheus-alertmanager               ClusterIP   10.101.254.6     <none>        9093/TCP   11m
-prometheus-alertmanager-headless      ClusterIP   None             <none>        9093/TCP   11m
-prometheus-kube-state-metrics         ClusterIP   10.97.118.91     <none>        8080/TCP   11m
-prometheus-prometheus-node-exporter   ClusterIP   10.103.244.211   <none>        9100/TCP   11m
-prometheus-prometheus-pushgateway     ClusterIP   10.110.232.46    <none>        9091/TCP   11m
-prometheus-server                     ClusterIP   10.99.166.109    <none>        80/TCP     11m
+Add Helm Repositories:
+To get the latest Helm charts for Prometheus and Grafana, you need to add their repositories.
 
 >
-Access Grafana Dashboard:
-You can use minikube to easily open the Grafana dashboard.
-Expose port-forward to grafana
-
-minikube service grafana -n monitoring
-
-This will open Grafana in your default web browser. 
-Use the credentials obtained in the next step to log in.
+goto Grafana ArtifactHub Helm Repository:
+https://artifacthub.io/packages/helm/grafana/grafana
 
 >
-To retrieve your Grafana login credentials:
-Open Bash Command window:
-
-echo "User: admin"
-echo "Password: $(kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode)"
+Examine the helm repository on ArtifactHub
+Install commands, values yamls..
 
 >
-Examine Grafana Dashboard
+Add the Grafana Helm repo
+helm repo add grafana https://grafana.github.io/helm-charts
+
+Update Helm repos to fetch the latest charts
+helm repo update
+
+>
+Check helm repos
+helm repo list
+
+>
+Install Grafana:
+Deploy Grafana into the monitoring namespace.
+
+helm install grafana grafana/grafana --namespace monitoring
+
+Wait for a couple of minutes to let Prometheus components deploy and start.
+
+>
+Check Kubernetes
+kubectl get all -n monitoring
