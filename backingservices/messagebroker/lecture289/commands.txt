@@ -21,6 +21,9 @@ Deploy Kafka using the Bitnami Kafka Helm chart on your Minikube:
 Run Command:
 helm install my-kafka bitnami/kafka
 
+or you can give specific version like: (if you get Timed out exception)
+helm install my-kafka bitnami/kafka --version 23.0.3
+
 This command will deploy Kafka with default configurations. 
 
 >
